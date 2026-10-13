@@ -1,0 +1,31 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "jsx": "react-jsx",
+    "strict": true,
+    "noEmit": true,
+    "skipLibCheck": true,
+    "lib": [
+      "DOM",
+      "ES2022"
+    ],
+    "baseUrl": ".",
+    "paths": {
+      "react": [
+        "./node_modules/@types/react"
+      ],
+      "react/*": [
+        "./node_modules/@types/react/*"
+      ],
+      "remotion": [
+        "./node_modules/remotion"
+      ]
+    }
+  },
+  "include": [
+    "src",
+    "../../skills/cinematic-motion-director/motion-kit"
+  ]
+}

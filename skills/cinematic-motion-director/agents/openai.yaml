@@ -1,0 +1,7 @@
+interface:
+  display_name: "Cinematic Motion Director"
+  short_description: "Art-directed motion design videos and ad creatives in code (Remotion)"
+  brand_color: "#FF4D1C"
+  default_prompt: "Turn this script into a premium motion design Reel: write the art direction and storyboard first, then build it in Remotion and render it."
+policy:
+  allow_implicit_invocation: true
