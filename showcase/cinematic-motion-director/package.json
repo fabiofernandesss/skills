@@ -6,7 +6,7 @@
   "scripts": {
     "studio": "remotion studio",
     "render": "remotion render Showcase out/showcase.mp4",
-    "gif": "remotion render Showcase out/showcase.gif --codec=gif --scale=0.3 --every-nth-frame=2",
+    "gif": "remotion render Showcase out/showcase.gif --codec=gif --scale=0.3 --every-nth-frame=2 --frames=10-453 --props={\"grain\":false}",
     "banner": "remotion still Banner out/banner.png",
     "typecheck": "tsc --noEmit"
   },

@@ -22,27 +22,28 @@ Cada skill transforma o seu agente em um especialista: com método, referências
 
 <table>
 <tr>
-<td width="300" valign="top">
-<a href="skills/cinematic-motion-director"><img src="assets/cinematic-motion-director/showcase.gif" width="280" alt="Cinematic Motion Director — demo" /></a>
+<td width="220" valign="top">
+<a href="skills/cinematic-motion-director"><img src="assets/cinematic-motion-director/showcase.gif" width="200" alt="Cinematic Motion Director — demo" /></a>
 </td>
 <td valign="top">
 
 ### [🎬 Cinematic Motion Director](skills/cinematic-motion-director)
 
-Diretor de motion design para vídeos feitos em código (Remotion + React).
-Tipografia cinética, câmera 2.5D/3D, easing refinado, transições cinematográficas, sincronia com voz e **criativos de anúncio em escala** para pipelines com IA.
+Diretor de motion design para vídeos feitos em código (Remotion + React): tipografia cinética, câmera 2.5D/3D, easing refinado, transições cinematográficas, sincronia com voz e **criativos de anúncio em escala** para pipelines com IA.
 
-`motion design` `reels` `ads` `remotion` `after effects style`
+`motion design` `reels` `ads` `remotion`
 
-**Link:** [github.com/fabiofernandesss/skills/tree/main/skills/cinematic-motion-director](https://github.com/fabiofernandesss/skills/tree/main/skills/cinematic-motion-director)
+**[→ Abrir a skill](skills/cinematic-motion-director)**
+
+</td>
+</tr>
+</table>
 
 ```bash
 npx skills add fabiofernandesss/skills --skill cinematic-motion-director
 ```
 
-</td>
-</tr>
-</table>
+Link direto: https://github.com/fabiofernandesss/skills/tree/main/skills/cinematic-motion-director
 
 > Novas skills chegam aqui. ⭐ Dê uma estrela no repositório para acompanhar.
 
