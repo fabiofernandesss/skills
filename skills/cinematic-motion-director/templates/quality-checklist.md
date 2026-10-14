@@ -10,8 +10,15 @@ the affected frames, repeat. Report honestly which items were checked.
 - [ ] Effect budget respected (≤ 1 signature effect per scene; overshoot on ≤ 1 element per beat)
 - [ ] It does not look like a slideshow, a stock template or a corporate deck
 
+## Inputs
+- [ ] Every claim, number, feature, logo and UI on screen comes from the user's real inputs
+- [ ] Nothing on the direction's prohibition list appears
+
 ## Story & rhythm
+- [ ] Frame 0 is not empty: the hook opens already in motion and works as a thumbnail
 - [ ] Hook works in the first 1–2 s, even as a still
+- [ ] Storyboard sheet (1 still/s) reviewed and approved before the full render
+- [ ] `rhythm-audit.mjs` run on the render; every flag either fixed or justified
 - [ ] Each scene has one job and one hero move
 - [ ] Intensity curve has peaks AND pauses; the CTA is calm and long enough
 - [ ] Duration matches the real audio; nothing was compressed to fit an arbitrary length

@@ -149,6 +149,8 @@ so rendering waits for them (Remotion's `delayRender`/`continueRender` if loadin
 ```bash
 npx remotion studio                                   # live preview
 node <skill-dir>/scripts/review-frames.mjs --comp Main --count 10 --scale 0.4   # review stills
+node <skill-dir>/scripts/review-frames.mjs --comp Main --every 1 --sheet         # storyboard sheet, 1 still/s
+node <skill-dir>/scripts/rhythm-audit.mjs out/main.mp4 --audio public/voice.mp3 # rhythm critic on the render
 npx remotion still Main out/frame.png --frame=120     # one frame
 npx remotion render Main out/main.mp4                 # H.264 MP4
 npx remotion render Main out/main.mp4 --crf=18        # higher quality
@@ -158,6 +160,10 @@ npx remotion render Main out/main.mp4 --gl=angle      # when using WebGL effects
 ```
 
 Review stills before the full render: they are 10× cheaper and catch 90% of problems.
+Both scripts only use Remotion's own packages and its bundled ffmpeg (`npx remotion ffmpeg`).
+That ffmpeg build is minimal (no `rawvideo` muxer, no `tile`/`fps`/`freezedetect` filters);
+the scripts pipe raw frames via `image2pipe` and compose in Node — reuse `scripts/lib/media.mjs`
+instead of assuming a full system ffmpeg exists.
 
 ### Programmatic (servers, queues, AI pipelines)
 

@@ -1,6 +1,6 @@
 ---
 name: cinematic-motion-director
-description: Art-directs and builds premium motion-design videos in code (Remotion + React + TypeScript) — kinetic typography, 2.5D/3D camera, parallax, refined easing, cinematic transitions, audio sync and real renders. Use when the user wants a motion graphics video, Reel/TikTok/Shorts, explainer, product or SaaS promo, animated title, kinetic-type piece, video ad creative or ad variations, "After Effects-style" animation, or asks to animate a script, voiceover or briefing; also when improving an existing Remotion video ("make this transition smoother", "this looks like a slideshow"). Works inside existing Remotion projects and AI pipelines that generate ad creatives from data.
+description: Art-directs and builds premium motion-design videos in code (Remotion + React + TypeScript) — kinetic typography, 2.5D/3D camera, parallax, refined easing, cinematic transitions, audio sync and real renders. Use when the user wants a motion graphics video, Reel/TikTok/Shorts, explainer, product or SaaS promo, animated title, kinetic-type piece, video ad creative or ad variations, "After Effects-style" animation, or asks to animate a script, voiceover or briefing; also for talking-head edits with captions and motion overlays, and when improving an existing Remotion video ("make this transition smoother", "this looks like a slideshow"). Works inside existing Remotion projects and AI pipelines that generate ad creatives from data.
 ---
 
 # Cinematic Motion Director
@@ -23,7 +23,8 @@ Identify the mode first; it changes how much you ask and what you deliver.
 |------|---------|-------------|
 | **A. New video** | script, idea, voiceover or briefing | direction + storyboard → project → reviewed render |
 | **B. Ad / template system** | ad creatives, variations, "our app generates videos", existing Remotion project | data-driven composition (zod schema) + variants + batch render path. Read `references/ad-creatives.md` |
-| **C. Revision** | "smoother", "more premium", "too fast", a frame looks wrong | diagnose with frames → targeted fix → before/after frames |
+| **C. Revision** | "smoother", "more premium", "too fast", a frame looks wrong | diagnose with frames + `rhythm-audit` → targeted fix → before/after frames |
+| **D. Talking head** | face-to-camera footage, captions/legendas, cut pauses, overlays on a creator video | transcript → caption style options → cuts, punch-ins, overlays. Read `references/talking-head-captions.md` |
 
 In an autonomous pipeline (no human in the loop), never block on questions: take the
 documented defaults, write your assumptions into the direction file, and continue.
@@ -34,8 +35,11 @@ Never jump from brief to a large implementation. Steps A–D are cheap; skipping
 makes AI video look like a slideshow.
 
 **A — Analyse.** Audience, single core message, tone, platform, format, duration, voice/music,
-the action you want at the end. If the brief is missing essentials (platform, brand
-constraints, audio), ask once in one compact message, or assume and state the assumption.
+the action you want at the end. Turn the request into a **director brief**
+(`templates/director-brief.md`): real inputs, direction, prohibitions, format, timeline with
+exact text, checks. A one-line request ("15 s showreel, go all out") is not a brief — it
+yields a pretty, generic video. Ask once, in one compact message, for the missing real
+inputs (product, screenshots, numbers, brand); otherwise assume and state the assumption.
 
 **B — Time it.** If an audio file exists, measure its real duration and derive cue points
 from it (captions/transcript timestamps) — never guess by eye. Without audio, estimate
@@ -51,17 +55,24 @@ THIS project; the kit's default (`signalNoir`) is a starting point, never the an
 **D — Storyboard.** Fill `templates/storyboard.md`: every scene gets a narrative job, time
 range, on-screen text, composition, camera, the hero move, transition out, sound. Each
 scene has ONE hero move. Show the user the direction + storyboard before building unless
-they asked you to go straight through.
+they asked you to go straight through. Prefer transitions by object (an element of one scene
+becomes the next) over generic transitions.
 
 **E — Build.** Read `references/remotion-implementation.md`. Copy `motion-kit/` into the
 project (`src/motion/`), express the direction as a `Direction` object, one component per
 scene, all tunables (colors, sizes, durations, easing) in one place. For exact Remotion API
 details rely on the official Remotion skills or docs — never invent APIs.
 
-**F — Review.** Render stills across the timeline (`scripts/review-frames.mjs`) and LOOK at
-them: framing, safe zones, legibility, hierarchy, alignment, collisions, unfinished
-animations at hold frames, transition midpoints. Then render the video and check rhythm.
-Fix, re-render the affected frames. Use `templates/quality-checklist.md`.
+**F — Review.** Two passes, both measured, not imagined:
+1. *Storyboard sheet* — `scripts/review-frames.mjs --comp X --every 1 --sheet` renders one
+   still per second plus a single contact-sheet image. LOOK at it: framing, safe zones,
+   legibility, hierarchy, collisions, unfinished animations on holds, an empty frame 0.
+   Show the sheet to the user and get an OK before the full render (skip the wait only in
+   autonomous runs).
+2. *Rhythm critic* — render, then `scripts/rhythm-audit.mjs out/video.mp4 [--audio voice.mp3]`:
+   motion-energy curve, cuts, shot lengths, dead stretches, calm-frame ratio, cuts vs. voice
+   pauses. Treat flags as questions; look at those moments, fix, re-render.
+Use `templates/quality-checklist.md`.
 
 **G — Deliver.** Final render + source + how to edit (where the direction lives, how to
 change text/timing, the render command). State plainly what was rendered and checked, and
@@ -85,7 +96,12 @@ what was not. Never claim a render or a check that did not happen.
    with quiet — rhythm comes from the pauses.
 6. **Sound serves the voice.** Visual accents land on stressed syllables and beats; music
    ducks under narration; SFX support cuts, never cover words.
-7. **Verify versions before version-gated APIs.** Run `npx remotion versions`. Shader
+7. **Real inputs only.** Never invent product features, numbers, testimonials, logos, UI or
+   claims. Missing input → visible placeholder + tell the user. Ads with invented claims are
+   a legal risk, not a creative choice.
+8. **Write prohibitions down.** Every direction lists what must NOT appear (particles,
+   glitch, neon, shake…). Prohibitions are what keep AI video from looking like a template.
+9. **Verify versions before version-gated APIs.** Run `npx remotion versions`. Shader
    transitions, `@remotion/effects`, `HtmlInCanvasMotionBlur`, `TransitionSeries.Overlay`
    and light leaks need recent 4.0.x releases (see `references/effects-catalog.md`).
 
@@ -115,8 +131,23 @@ components when the concept needs something the kit does not have.
 | Choosing transitions/effects, what each one means, version requirements | `references/effects-catalog.md` |
 | Project setup, fonts, audio, compositions, 3D, rendering, pitfalls | `references/remotion-implementation.md` |
 | Ads, variants, safe zones, AI pipelines, batch rendering | `references/ad-creatives.md` |
+| Talking-head edits, captions (Whisper), cutting pauses, overlays | `references/talking-head-captions.md` |
+| Turning a vague request into a director brief | `templates/director-brief.md` |
 | Studios and sources behind these rules | `references/reference-library.md` |
 | Worked examples | `examples/` |
+
+## Scripts (run from the Remotion project root; no extra installs)
+
+- `scripts/review-frames.mjs` — stills across the timeline; `--every 1 --sheet` = storyboard sheet
+- `scripts/rhythm-audit.mjs` — measures the rendered video's rhythm (the critic)
+
+## Output format
+
+Default: a Remotion project + MP4. If the user explicitly wants a single self-playing HTML
+file (no Node), apply the same direction/storyboard, drive everything from one time value,
+support `?t=<seconds>` to show an exact moment, and explain that an MP4 then requires
+screen recording or a frame-by-frame capture — Remotion (or HyperFrames, an HTML-to-video
+renderer) is the reliable path to video files.
 
 ## Companion skills
 

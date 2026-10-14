@@ -29,7 +29,9 @@ Esta skill faz o agente trabalhar como um **diretor de arte + motion designer s�
 - 🔀 **Transições que contam história** — match cuts, wipes, máscaras, shaders; cada uma com um motivo.
 - 🔊 **Sincronia com voz e trilha** — marcações a partir do áudio real, nunca no olho.
 - 📣 **Criativos para anúncios** — templates orientados a dados (zod), safe zones de Reels/TikTok, variações em lote para pipelines com IA.
-- 🔍 **Revisa o próprio trabalho** — renderiza quadros, inspeciona, corrige, e só então entrega.
+- 🎙️ **Vídeo de fala** — legendas em português (Whisper), estilos Pílula/Karaokê/Caixa, corte de pausas, punch-ins e cenas animadas por cima do rosto.
+- 🚫 **Só insumos reais** — não inventa recurso, número nem depoimento; trabalha com uma lista de proibições para não parecer template.
+- 🔍 **Revisa o próprio trabalho** — storyboard com 1 quadro por segundo para você aprovar antes do render, e um **crítico de ritmo** que mede o vídeo renderizado.
 
 <img src="../../assets/cinematic-motion-director/frames.jpg" alt="Quadros do vídeo demo: hook, contraste de curvas, pipeline, quadro a quadro, CTA" />
 
@@ -92,10 +94,55 @@ Essa transição da cena 3 está dura e o texto some rápido demais. Deixa mais 
 ```
 
 ```text
+Legenda esse vídeo (public/eu-falando.mp4) em português, estilo pílula, corta as pausas e coloca uma cena animada no topo quando eu falar de números.
+```
+
+```text
 Nosso SaaS já gera vídeos com Remotion a partir de JSON. Melhora o template para parecer feito por estúdio, sem quebrar o contrato de props.
 ```
 
 O agente vai: analisar → medir o tempo → propor direção de arte e storyboard → construir no Remotion → renderizar quadros e revisar → entregar o vídeo + código editável.
+
+## 🎞️ Aprovação por storyboard + crítico de ritmo
+
+Antes do render final, a skill gera **um quadro por segundo numa imagem só** para você aprovar:
+
+<img src="../../assets/cinematic-motion-director/storyboard-sheet.png" alt="Storyboard: um quadro por segundo do vídeo demo" />
+
+Depois do render, um crítico mede o vídeo de verdade (não o código): curva de energia, cortes, duração dos planos, trechos parados e se os cortes caem nas pausas da voz.
+
+```text
+$ node scripts/rhythm-audit.mjs out/anuncio.mp4 --audio public/voz.mp3
+energy/s  █▅▅▁▁▁▇▁▃▂▁
+cuts      1.8 · 6.4 · 8.6 s
+shots     4 · avg 2.75 s · longest 4.6 s
+pauses    3 in audio · cuts on pauses 2/3
+
+FLAGS
+- Dead stretch 2.73–6.40 s: nothing moves. If it is a reading hold, keep it but add drift…
+```
+
+Esse alerta é real: o crítico encontrou 3,7 s parados no nosso próprio template de anúncio — corrigimos com um push lento e ele passou a dar *No flags*.
+
+## ✍️ Prompt de diretor (copie e cole)
+
+Pedido de uma frase gera vídeo bonito e genérico. Este formato gera vídeo seu:
+
+```text
+Use a skill cinematic-motion-director. Quero um vídeo de [15] s, 1080x1920, 30 fps, sobre [produto].
+
+1. Insumos reais (não invente nada além disto): nome [ ], promessa [ ], momentos reais [prints/frases/números], cor de acento [#hex], fonte [ ], link [ ].
+2. Direção: [sensação em 3 palavras]; uma metáfora visual; uma fonte e um acento; cenas ligadas por objeto (o que termina uma cena começa a próxima); funciona sem som.
+3. Proibido: [ex.: partículas, glitch, neon, gradiente em botão, visual de template].
+4. Formato: dentro da área segura do [Reels/TikTok]; entrega em MP4 + projeto editável.
+5. Linha do tempo com texto exato:
+   [0–1,5 s] gancho "[...]"
+   [1,5–5 s] problema "[...]"
+   [5–11 s] momentos reais "[...]" / "[...]" / "[...]"
+   [11–13,5 s] resultado "[...]"
+   [13,5–15 s] marca + chamada + link, segurando o quadro final
+6. Antes de renderizar: me mostre o storyboard com 1 quadro por segundo numa imagem só e espere meu OK. Depois do render, rode o rhythm-audit e me diga o que ele apontou.
+```
 
 ## 📣 Feito para criativos de anúncio
 
@@ -122,14 +169,19 @@ cinematic-motion-director/
 │   ├── effects-catalog.md        # transições e efeitos do Remotion (verificados) + quando usar
 │   ├── remotion-implementation.md# setup, fontes, áudio, 3D, render, armadilhas
 │   ├── ad-creatives.md           # anúncios, safe zones, variações, pipelines de IA
+│   ├── talking-head-captions.md  # vídeo de fala: Whisper, estilos de legenda, cortes, overlays
 │   └── reference-library.md      # BUCK, Ordinary Folk, School of Motion… e o que extrair
 ├── templates/
+│   ├── director-brief.md         # transforma pedido vago em brief de diretor (6 partes)
 │   ├── art-direction.md          # ficha de direção de arte
 │   ├── storyboard.md             # storyboard cena a cena com tempos
 │   └── quality-checklist.md      # checklist antes do render final
 ├── examples/                     # roteiro → storyboard; pipeline de anúncios
 ├── motion-kit/                   # presets TypeScript prontos (copiados para o projeto)
-└── scripts/review-frames.mjs     # renderiza quadros de revisão espalhados na timeline
+└── scripts/
+    ├── review-frames.mjs         # quadros de revisão; --every 1 --sheet = storyboard numa imagem
+    ├── rhythm-audit.mjs          # crítico de ritmo do vídeo renderizado
+    └── lib/media.mjs             # helpers sem dependências (ffmpeg do próprio Remotion)
 ```
 
 ### Motion kit
@@ -150,7 +202,8 @@ cinematic-motion-director/
 - Vídeo demo de 15 s renderizado (MP4 + GIF) e revisado quadro a quadro
 - Template de anúncio renderizado em 9:16 (com guias de safe zone), 4:5 e 1:1
 - Transição com shader (`zoomBlur`) renderizada via CLI sem flags
-- `scripts/review-frames.mjs` testado, inclusive com `calculateMetadata` e props
+- `scripts/review-frames.mjs` testado, inclusive com `calculateMetadata`, props e `--every 1 --sheet`
+- `scripts/rhythm-audit.mjs` testado em 2 vídeos renderizados e com áudio sintético (detecção de pausas)
 
 ## Requisitos
 

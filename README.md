@@ -29,7 +29,7 @@ Cada skill transforma o seu agente em um especialista: com método, referências
 
 ### [🎬 Cinematic Motion Director](skills/cinematic-motion-director)
 
-Diretor de motion design para vídeos feitos em código (Remotion + React): tipografia cinética, câmera 2.5D/3D, easing refinado, transições cinematográficas, sincronia com voz e **criativos de anúncio em escala** para pipelines com IA.
+Diretor de motion design para vídeos feitos em código (Remotion + React): tipografia cinética, câmera 2.5D/3D, easing refinado, transições cinematográficas, sincronia com voz, **vídeo de fala com legendas** e **criativos de anúncio em escala** para pipelines com IA.
 
 `motion design` `reels` `ads` `remotion`
 

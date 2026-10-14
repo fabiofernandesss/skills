@@ -16,6 +16,9 @@ land one message, drive one action — at scale, in many variants, without losin
   still has an easing intent and every screen still holds long enough to read.
 - **Brand early, CTA clear.** Brand visible by ~3 s (logo, color or product). CTA end card
   holds ≥ 1.5–2 s, with the action as a verb ("Teste grátis", "Baixe agora").
+- **Real inputs only.** The template never invents features, numbers, testimonials or
+  logos. If the pipeline has no proof value, the proof screen is skipped — not filled with a
+  plausible number.
 - **Native beats polished-generic.** Creatives that feel made for the platform outperform
   TV-style spots. Premium motion ≠ corporate.
 

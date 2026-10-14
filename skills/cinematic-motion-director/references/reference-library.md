@@ -4,7 +4,7 @@ Where the rules in this skill come from, and what each source contributes. Use r
 to extract **principles** — composition, rhythm, materiality, movement — never to copy a
 frame, a style frame or a studio's signature move.
 
-Link check: 2026-10-13 (✓ = responded; ⚠ = blocks automated requests, open in a browser).
+Link check: 2026-10-13 (repertoire section: 2026-10-13, GitHub API) (✓ = responded; ⚠ = blocks automated requests, open in a browser).
 
 ## Studios and repertoire
 
@@ -37,6 +37,14 @@ Link check: 2026-10-13 (✓ = responded; ⚠ = blocks automated requests, open i
 | Remotion — Three ✓ https://www.remotion.dev/docs/three | `ThreeCanvas`, frame-driven R3F. |
 | Remotion official agent skills ✓ https://github.com/remotion-dev/skills | API-level best practices (inline interpolations, premounting, media components, fonts, rendering). This skill defers to them for API specifics. |
 | Agent Skills format ✓ https://agentskills.io | `SKILL.md` format shared by Claude Code, Codex and other agents. |
+
+## Prompt repertoire
+
+| Source | Contribution |
+|--------|--------------|
+| awesome-opus5-5-videos ✓ https://github.com/yihui-dev/awesome-opus5-5-videos (MIT list; the videos belong to their authors) | 500+ code-animation videos with the prompts behind them (`data/videos.json`, `prompts/*.md`). Lesson: one-line prompts give generic showreels; the strong ones are *director prompts* — real inputs, a direction paragraph, a prohibition list, a timeline with exact on-screen text and a stills check before delivery. → `templates/director-brief.md`. Use the prompts as structure references, with credit; never reuse other people's brands or footage. Many entries are partial (`prompt_partial: true`) — skip those. |
+| Remotion TikTok template ✓ https://github.com/remotion-dev/template-tiktok | Whisper.cpp transcription + TikTok-style captions. → `talking-head-captions.md`. |
+| HyperFrames ✓ https://github.com/heygen-com/hyperframes (Apache-2.0) | Alternative engine: write HTML, render video, built for agents. Consider when a project is HTML-first; this skill's direction and review rules apply unchanged. |
 
 ## Ads
 

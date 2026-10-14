@@ -12,6 +12,7 @@ import {
   ease,
   estimateSpeechSeconds,
   progress,
+  tween,
   useSafeArea,
 } from "../../../skills/cinematic-motion-director/motion-kit";
 import { useCurrentFrame } from "remotion";
@@ -70,6 +71,12 @@ const CtaButton: React.FC<{ label: string; accent: string; bg: string; size: num
   );
 };
 
+/** Constant slow push (linear on purpose, like a camera drift): reading holds stay alive. Added after rhythm-audit flagged 3.7 s of stillness. */
+const Push: React.FC<{ duration: number; style: React.CSSProperties; children: React.ReactNode }> = ({ duration, style, children }) => {
+  const frame = useCurrentFrame();
+  return <AbsoluteFill style={{ ...style, scale: String(tween(frame, [0, duration], [1, 1.05], ease.linear)) }}>{children}</AbsoluteFill>;
+};
+
 export const AdCreative: React.FC<AdProps> = (p) => {
   const { fps, width } = useVideoConfig();
   const tl = timeline(p, fps);
@@ -81,38 +88,38 @@ export const AdCreative: React.FC<AdProps> = (p) => {
   return (
     <AbsoluteFill style={{ backgroundColor: bg }}>
       <Sequence durationInFrames={tl.hook} premountFor={fps}>
-        <AbsoluteFill style={pad}>
+        <Push duration={tl.hook} style={pad}>
           <div style={{ ...big, fontSize: 120 * u }}>
             <WordStagger text={p.hook} mode="mask" stagger={2} duration={12} emphasis={[p.hookEmphasis]} emphasisStyle={{ color: accent }} />
           </div>
-        </AbsoluteFill>
+        </Push>
       </Sequence>
       <Sequence from={tl.hook} durationInFrames={tl.benefit} premountFor={fps}>
-        <AbsoluteFill style={pad}>
+        <Push duration={tl.benefit} style={pad}>
           <div style={{ ...big, fontSize: 84 * u, fontWeight: 600 }}>
             <WordStagger text={p.benefit} stagger={2} />
           </div>
-        </AbsoluteFill>
+        </Push>
       </Sequence>
       <Sequence from={tl.hook + tl.benefit} durationInFrames={tl.proof} premountFor={fps}>
-        <AbsoluteFill style={pad}>
+        <Push duration={tl.proof} style={pad}>
           <div style={{ ...big, fontSize: 230 * u, color: accent }}>
             <CountUp to={p.proof.value} suffix={p.proof.suffix} duration={30} />
           </div>
           <div style={{ fontFamily: fonts.text, fontSize: 44 * u, color: ink }}>
             <MaskReveal start={8}>{p.proof.label}</MaskReveal>
           </div>
-        </AbsoluteFill>
+        </Push>
       </Sequence>
       <Sequence from={tl.hook + tl.benefit + tl.proof} durationInFrames={tl.cta} premountFor={fps}>
-        <AbsoluteFill style={pad}>
+        <Push duration={tl.cta} style={pad}>
           <div style={{ ...big, fontSize: 64 * u, fontWeight: 600 }}>
             <Highlight color={accent} start={2} duration={14} style={{ color: ink }}>
               {p.brand.name}
             </Highlight>
           </div>
           <CtaButton label={p.cta} accent={accent} bg={bg} size={52 * u} />
-        </AbsoluteFill>
+        </Push>
       </Sequence>
       {/* Brand visible from the first second, inside the safe area. */}
       <Sequence durationInFrames={tl.hook + tl.benefit + tl.proof} premountFor={fps}>

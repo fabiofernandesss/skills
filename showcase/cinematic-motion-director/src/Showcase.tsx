@@ -53,7 +53,7 @@ const display = (size: number, weight = 800): React.CSSProperties => ({
 const Hook: React.FC = () => {
   const frame = useCurrentFrame();
   const { durationInFrames } = useVideoConfig();
-  const strike = progress(frame, 52, 14, ease.inOut);
+  const strike = progress(frame, 38, 14, ease.inOut);
   return (
     <Camera zoom={tween(frame, [0, durationInFrames], [1, 1.08], ease.inOut)} drift={3}>
       <Layer depth={0.3}>
@@ -62,17 +62,18 @@ const Hook: React.FC = () => {
       <Layer>
         <AbsoluteFill style={{ padding: layout.margin, justifyContent: "center", gap: 36 }}>
           <div style={label}>
-            <Scramble text="// cinematic-motion-director" start={2} seed="hook" />
+            <Scramble text="// cinematic-motion-director" start={-8} seed="hook" />
           </div>
           <div style={display(104, 600)}>
             {/* Break lines by meaning, never by width. */}
-            <WordStagger text="E se este vídeo" start={8} stagger={3} />
+            {/* Negative starts: frame 0 is already in motion — the hook must work as a thumbnail. */}
+            <WordStagger text="E se este vídeo" start={-6} stagger={3} />
             <br />
-            <WordStagger text="foi feito" start={17} stagger={3} />
+            <WordStagger text="foi feito" start={3} stagger={3} />
           </div>
           <div style={display(150)}>
-            <MaskReveal start={26}>sem abrir o</MaskReveal>
-            <MaskReveal start={32}>
+            <MaskReveal start={12}>sem abrir o</MaskReveal>
+            <MaskReveal start={18}>
               <span style={{ position: "relative", color: c.accent }}>
                 After Effects?
                 <span
