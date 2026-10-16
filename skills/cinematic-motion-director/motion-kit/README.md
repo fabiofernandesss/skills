@@ -71,6 +71,15 @@ Music (feed `beats.json` from `scripts/beat-map.mjs`): `beatPulse(frame, fps, be
 
 Working example: `showcase/cinematic-motion-director/src/UiMorph.tsx` in the skills repo.
 
+## edit.tsx — voiceover-driven edits
+Not exported from `index.ts` (needs `@remotion/media`); import `./motion/edit`.
+`EditTimeline({ plan, voice, scenes })` renders an EDIT PLAN (see `references/voiceover-and-footage.md`):
+narration slices (`vo`), sound bites with original audio (`bite`), visuals `title` / `kinetic`
+(words on their spoken time) / `number` / `broll` (`cover`+`focus` or `contain-blur`) / `image` /
+`scene` (your component), TikTok-style captions, "Fonte:" credit tags, drift on type scenes.
+Helpers: `planTimeline(plan)` (durations for calculateMetadata), `resolveEditAssets(plan)` (loads
+voice map + bite transcripts), `timelineWords(plan, voice)`.
+
 ## More in easing.ts / text.tsx
 - `springSteps(frame, fps, [{at, value}…], config)` — a value with many targets as a sum of springs (pure function of the frame). `SHAPE_SPRING` (ratio ~0.73) and `CAMERA_SPRING` (critical, slower).
 - `Typewriter` — keystroke rhythm with seeded jitter; caret blinks only when idle. Props: `text`, `start`, `cps`, `jitter`.

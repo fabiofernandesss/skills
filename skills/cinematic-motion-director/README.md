@@ -29,6 +29,8 @@ Esta skill faz o agente trabalhar como um **diretor de arte + motion designer s�
 - 🔀 **Transições que contam história** — match cuts, wipes, máscaras, shaders; cada uma com um motivo.
 - 🔊 **Sincronia com voz e trilha** — marcações a partir do áudio real, nunca no olho.
 - 📣 **Criativos para anúncios** — templates orientados a dados (zod), safe zones de Reels/TikTok, variações em lote para pipelines com IA.
+- 🗣️ **Sua voz vira o vídeo** — traga a narração do ElevenLabs (ou qualquer voz) e a skill monta tudo em cima dela: cenas, legendas e cortes no tempo exato de cada palavra.
+- 🎞️ **Cortes de vídeos reais** — busca no YouTube vídeos sobre o assunto (Creative Commons por padrão), acha pela transcrição o trecho em que falam do tema, corta e encaixa como b-roll ou com o áudio original, com crédito na tela.
 - 🎙️ **Vídeo de fala** — legendas em português (Whisper), estilos Pílula/Karaokê/Caixa, corte de pausas, punch-ins e cenas animadas por cima do rosto.
 - 🚫 **Só insumos reais** — não inventa recurso, número nem depoimento; trabalha com uma lista de proibições para não parecer template.
 - 🎵 **Música primeiro** — mede BPM, batidas, compassos e o drop da sua trilha; cortes caem no compasso, impactos na batida.
@@ -135,6 +137,32 @@ first downbeat 0 s · drop none found
 bar length 2.001 s → good cut points: downbeats; hits: beats; big reveal: drop
 ```
 
+## 🗣️ Demo 3 — sua voz + cortes de outros vídeos
+
+<table><tr>
+<td width="250"><img src="../../assets/cinematic-motion-director/voice-edit.gif" width="240" alt="Vídeo montado sobre uma narração: número, b-roll com crédito, palavras no tempo da fala, trecho com o áudio original de uma aula e fechamento" /></td>
+<td valign="top">
+
+Você entrega a **narração** (ex.: ElevenLabs) e o **tema**. A skill:
+
+1. mapeia cada palavra e pausa da voz (`voice-map.mjs`);
+2. busca vídeos sobre o assunto, **checa a licença**, baixa e lê a transcrição (`footage.mjs`);
+3. acha o trecho em que o vídeo fala do tema (`moments`) e corta com o volume igualado ao da sua voz (`clip --match`);
+4. escreve um **plano de edição** (JSON) alternando cenas de motion, b-roll mudo e **trechos com o áudio original** (a narração pausa e volta);
+5. renderiza com legendas, créditos "Fonte: …" e revisa com os críticos.
+
+<sub><a href="../../assets/cinematic-motion-director/voice-edit.mp4">MP4 com áudio</a> · código: <a href="../../showcase/cinematic-motion-director/src/VoiceEdit.tsx">VoiceEdit.tsx</a> + <a href="../../showcase/cinematic-motion-director/public/test/edit.json">edit.json</a></sub>
+
+</td></tr></table>
+
+```text
+Aqui está minha narração do ElevenLabs (public/voz/narracao.mp3) e o roteiro (roteiro.txt).
+Monta um Reel sobre energia solar: busca 1 ou 2 vídeos Creative Commons no YouTube sobre o tema,
+usa cortes como b-roll e um trecho curto de alguém explicando com o áudio original. Legendas e créditos.
+```
+
+> **Direitos:** baixar do YouTube é restrito pelos Termos do YouTube. A skill usa por padrão só vídeos **Creative Commons** (com crédito), seus próprios vídeos (`footage.mjs import`) ou material que você declarar ter direito (`--rights`). Se o YouTube pedir "confirme que você não é um robô", ela **não** contorna: oferece importar o arquivo ou usar acervos livres.
+
 ## 🎞️ Aprovação por storyboard + crítico de ritmo
 
 Antes do render final, a skill gera **um quadro por segundo numa imagem só** para você aprovar:
@@ -203,6 +231,7 @@ cinematic-motion-director/
 │   ├── ad-creatives.md           # anúncios, safe zones, variações, pipelines de IA
 │   ├── talking-head-captions.md  # vídeo de fala: Whisper, estilos de legenda, cortes, overlays
 │   ├── scene-recipes.md          # 18 receitas de cena com números, proibições padrão, armadilhas
+│   ├── voiceover-and-footage.md  # montagem sobre a voz, cortes do YouTube, direitos, plano de edição
 │   └── reference-library.md      # BUCK, Ordinary Folk, School of Motion… e o que extrair
 ├── templates/
 │   ├── director-brief.md         # transforma pedido vago em brief de diretor (6 partes)
@@ -215,6 +244,8 @@ cinematic-motion-director/
     ├── review-frames.mjs         # quadros de revisão; --every 1 --sheet = storyboard numa imagem
     ├── rhythm-audit.mjs          # crítico de ritmo: trechos parados, pops, cortes vs batida/voz, emenda de loop
     ├── beat-map.mjs              # música primeiro: BPM, batidas, downbeats, drop → JSON
+    ├── voice-map.mjs             # sua voz → palavras, frases e pausas (ElevenLabs, roteiro, Whisper)
+    ├── footage.mjs               # buscar · baixar (CC) · importar · achar trechos · cortar · créditos
     └── lib/media.mjs             # helpers sem dependências (ffmpeg do próprio Remotion)
 ```
 
@@ -230,6 +261,7 @@ cinematic-motion-director/
 | `formats` | formatos sociais, safe zones, guia visual |
 | `sync` | cue points do áudio → frames; `beatPulse`, `snapToBeat` para música |
 | `ui` | `Cursor` (cliques com arco e ondulação) · `MorphBox` (uma forma, todos os estados) · `Handoff` (o acento nunca some entre estados) |
+| `edit` | `EditTimeline`: monta o vídeo a partir da voz + plano de edição (narração, b-roll, trechos com áudio original, legendas, créditos) |
 
 ## ✅ O que foi testado
 
@@ -240,6 +272,9 @@ cinematic-motion-director/
 - `scripts/review-frames.mjs` testado, inclusive com `calculateMetadata`, props e `--every 1 --sheet`
 - `scripts/rhythm-audit.mjs` testado em 3 vídeos renderizados e com áudio sintético (pausas, batidas, emenda de loop, pops)
 - `scripts/beat-map.mjs` testado em faixas sintéticas de 96, 124 e 140 BPM: BPM exato, primeiro downbeat e drop corretos, erro ≤ 38 ms (~1 quadro)
+- Demo "voz + cortes" renderizada com áudio: narração PT-BR (formato de saída do ElevenLabs com timestamps), b-roll, trecho com áudio original, legendas e créditos — loudness da narração e do trecho original igualadas (−13,30 vs −13,27 LUFS)
+- `voice-map.mjs`: caminhos "alinhamento ElevenLabs" e "só roteiro + áudio" testados (frases batem com ≤ 0,16 s de diferença); Whisper local implementado, não testado (download de ~466 MB)
+- `footage.mjs`: busca Creative Commons no YouTube testada; `import`, `moments`, `clip --match` e `credits` testados. O download (`fetch`) foi bloqueado pelo YouTube nesta rede ("confirme que não é um robô") — a skill trata isso com mensagem clara e alternativas, sem contornar
 - Demo "1 forma, 0 cortes" renderizada com áudio: `MorphBox`, `Cursor`, `Handoff`, `Typewriter`, `springSteps`, `beatPulse` — 3/3 mudanças na batida, emenda do loop 0,0027 vs 0,0032 dos quadros vizinhos, 7 rodadas de crítico independente até "ship"
 
 ## Requisitos

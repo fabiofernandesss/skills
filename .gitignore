@@ -3,3 +3,7 @@ out/
 .DS_Store
 *.log
 .env*
+
+# local tools and downloaded footage (rights belong to their owners)
+.tools/
+showcase/*/public/broll/

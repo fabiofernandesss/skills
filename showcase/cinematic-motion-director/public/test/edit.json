@@ -1,0 +1,105 @@
+{
+  "voice": {
+    "src": "test/narracao.mp3",
+    "map": "test/narracao.voice.json"
+  },
+  "transition": "cut",
+  "captions": {
+    "style": "pill",
+    "y": 0.62,
+    "maxWords": 3,
+    "on": "footage"
+  },
+  "segments": [
+    {
+      "kind": "vo",
+      "from": 0,
+      "to": 2.75,
+      "visual": {
+        "type": "number",
+        "value": 8,
+        "suffix": " min",
+        "label": "do Sol até a Terra"
+      }
+    },
+    {
+      "kind": "vo",
+      "from": 2.75,
+      "to": 4.78,
+      "visual": {
+        "type": "broll",
+        "src": "broll/aula-12-energia-solar/source.mp4",
+        "from": 0.4,
+        "fit": "cover",
+        "focus": [
+          82,
+          40
+        ],
+        "push": 0.08,
+        "credit": "Canal Exemplo (teste)"
+      }
+    },
+    {
+      "kind": "vo",
+      "from": 4.78,
+      "to": 8.47,
+      "visual": {
+        "type": "broll",
+        "src": "broll/aula-12-energia-solar/source.mp4",
+        "from": 5.2,
+        "fit": "cover",
+        "credit": "Canal Exemplo (teste)",
+        "focus": [
+          78,
+          55
+        ]
+      }
+    },
+    {
+      "kind": "vo",
+      "from": 8.47,
+      "to": 12.01,
+      "visual": {
+        "type": "kinetic",
+        "emphasis": [
+          "silício"
+        ]
+      }
+    },
+    {
+      "kind": "vo",
+      "from": 12.01,
+      "to": 15.28,
+      "visual": {
+        "type": "title",
+        "kicker": "Na fonte",
+        "text": "Escuta como um professor explica",
+        "emphasis": [
+          "professor"
+        ]
+      }
+    },
+    {
+      "kind": "bite",
+      "src": "broll/aula-12-energia-solar/clips/celula-eletrons.mp4",
+      "from": 0,
+      "to": 7.2,
+      "fit": "contain-blur",
+      "credit": "Canal Exemplo (teste)",
+      "transcript": "broll/aula-12-energia-solar/clips/celula-eletrons.transcript.json"
+    },
+    {
+      "kind": "vo",
+      "from": 15.28,
+      "to": 20.77,
+      "visual": {
+        "type": "title",
+        "kicker": "Ou seja",
+        "text": "o mesmo sol que ilumina o seu dia pode acender a sua casa",
+        "emphasis": [
+          "casa"
+        ]
+      }
+    }
+  ]
+}

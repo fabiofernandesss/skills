@@ -1,0 +1,35 @@
+{
+  "duration": 25.26467120181406,
+  "phrases": [
+    {
+      "text": "Bem-vindos a mais uma aula sobre energia.",
+      "start": 0.25,
+      "end": 2.931315192743764
+    },
+    {
+      "text": "A célula fotovoltaica é feita de silício.",
+      "start": 3.7313151927437644,
+      "end": 6.425056689342403
+    },
+    {
+      "text": "Quando a luz atinge o silício, os elétrons se soltam.",
+      "start": 7.225056689342404,
+      "end": 10.678934240362812
+    },
+    {
+      "text": "Esse fluxo de elétrons é a corrente elétrica que usamos em casa.",
+      "start": 11.478934240362811,
+      "end": 15.415850340136053
+    },
+    {
+      "text": "Os painéis comuns convertem perto de vinte por cento da luz em energia.",
+      "start": 16.215850340136054,
+      "end": 20.629954648526077
+    },
+    {
+      "text": "Na próxima aula, vamos falar sobre baterias.",
+      "start": 21.429954648526078,
+      "end": 24.4646485260771
+    }
+  ]
+}

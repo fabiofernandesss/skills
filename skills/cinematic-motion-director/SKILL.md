@@ -1,6 +1,6 @@
 ---
 name: cinematic-motion-director
-description: Art-directs and builds premium motion-design videos in code (Remotion + React + TypeScript) — kinetic typography, 2.5D/3D camera, parallax, refined easing, cinematic transitions, beat-synced music, UI/product demos with cursor and shape morphs, and real renders. Use when the user wants a motion graphics video, Reel/TikTok/Shorts, explainer, product or SaaS promo, animated title, kinetic-type piece, video ad creative or ad variations, "After Effects-style" animation, or asks to animate a script, voiceover or briefing; also for talking-head edits with captions and motion overlays, and when improving an existing Remotion video ("make this transition smoother", "this looks like a slideshow"). Works inside existing Remotion projects and AI pipelines that generate ad creatives from data.
+description: Art-directs and builds premium motion-design videos in code (Remotion + React + TypeScript) — kinetic typography, 2.5D/3D camera, parallax, refined easing, cinematic transitions, beat-synced music, UI/product demos with cursor and shape morphs, and real renders. Use when the user wants a motion graphics video, Reel/TikTok/Shorts, explainer, product or SaaS promo, animated title, kinetic-type piece, video ad creative or ad variations, "After Effects-style" animation, or asks to animate a script, voiceover or briefing; also for talking-head edits with captions, for building a full video on top of a finished voiceover (ElevenLabs or any narration) with B-roll and sound bites from YouTube or the user's footage, and when improving an existing Remotion video ("make this transition smoother", "this looks like a slideshow"). Works inside existing Remotion projects and AI pipelines that generate ad creatives from data.
 ---
 
 # Cinematic Motion Director
@@ -25,6 +25,7 @@ Identify the mode first; it changes how much you ask and what you deliver.
 | **B. Ad / template system** | ad creatives, variations, "our app generates videos", existing Remotion project | data-driven composition (zod schema) + variants + batch render path. Read `references/ad-creatives.md` |
 | **C. Revision** | "smoother", "more premium", "too fast", a frame looks wrong | diagnose with frames + `rhythm-audit` → targeted fix → before/after frames |
 | **D. Talking head** | face-to-camera footage, captions/legendas, cut pauses, overlays on a creator video | transcript → caption style options → cuts, punch-ins, overlays. Read `references/talking-head-captions.md` |
+| **E. Voiceover edit** | "here's my ElevenLabs voice, build the video", B-roll/cortes from YouTube or own files, sound bites | voice map → footage (rights-checked) → EDIT PLAN → `EditTimeline` render. Read `references/voiceover-and-footage.md` |
 
 In an autonomous pipeline (no human in the loop), never block on questions: take the
 documented defaults, write your assumptions into the direction file, and continue.
@@ -116,12 +117,15 @@ what was not. Never claim a render or a check that did not happen.
    with quiet — rhythm comes from the pauses.
 6. **Sound serves the voice.** Visual accents land on stressed syllables and beats; music
    ducks under narration; SFX support cuts, never cover words.
-7. **Real inputs only.** Never invent product features, numbers, testimonials, logos, UI or
+7. **Rights before footage.** Third-party video only when it's Creative Commons (attributed
+   on screen and in the description), the user's own, or the user states a specific right
+   (`footage.mjs --rights`). Never bypass a platform's anti-bot or sign-in check.
+8. **Real inputs only.** Never invent product features, numbers, testimonials, logos, UI or
    claims. Missing input → visible placeholder + tell the user. Ads with invented claims are
    a legal risk, not a creative choice.
-8. **Write prohibitions down.** Every direction lists what must NOT appear (particles,
+9. **Write prohibitions down.** Every direction lists what must NOT appear (particles,
    glitch, neon, shake…). Prohibitions are what keep AI video from looking like a template.
-9. **Verify versions before version-gated APIs.** Run `npx remotion versions`. Shader
+10. **Verify versions before version-gated APIs.** Run `npx remotion versions`. Shader
    transitions, `@remotion/effects`, `HtmlInCanvasMotionBlur`, `TransitionSeries.Overlay`
    and light leaks need recent 4.0.x releases (see `references/effects-catalog.md`).
 
@@ -139,6 +143,7 @@ Read `motion-kit/README.md` for the full API.
 - `formats.tsx` — `FORMATS`, `SAFE_ZONES`, `useSafeArea`, `SafeZoneGuide`
 - `sync.ts` — `cues()`, `estimateSpeechSeconds`, and music sync: `beatPulse`, `beatIndex`, `snapToBeat`
 - `ui.tsx` — `Cursor` (arc travel, press + ripple), `MorphBox` ("one shape, never cut"), `Handoff` (accent carried through every morph)
+- `edit.tsx` (import directly; needs `@remotion/media`) — `EditTimeline` renders an EDIT PLAN: narration slices, B-roll, sound bites, type scenes, captions, credits; `planTimeline`, `resolveEditAssets`
 - `easing.ts` also: `springSteps` (one value, many targets, pure function of frame), `SHAPE_SPRING`, `CAMERA_SPRING`
 - `text.tsx` also: `Typewriter` (human keystroke rhythm, caret blinks only when idle)
 
@@ -155,6 +160,7 @@ components when the concept needs something the kit does not have.
 | Project setup, fonts, audio, compositions, 3D, rendering, pitfalls | `references/remotion-implementation.md` |
 | Ads, variants, safe zones, AI pipelines, batch rendering | `references/ad-creatives.md` |
 | Talking-head edits, captions (Whisper), cutting pauses, overlays | `references/talking-head-captions.md` |
+| Building on a finished voiceover; YouTube/own footage, sound bites, rights, EDIT PLAN | `references/voiceover-and-footage.md` |
 | Turning a vague request into a director brief | `templates/director-brief.md` |
 | Proven scene skeletons with numbers, default prohibitions, technical gotchas | `references/scene-recipes.md` |
 | Studios and sources behind these rules | `references/reference-library.md` |
@@ -165,6 +171,8 @@ components when the concept needs something the kit does not have.
 - `scripts/review-frames.mjs` — stills across the timeline; `--every 1 --sheet` = storyboard sheet
 - `scripts/rhythm-audit.mjs` — measures the rendered video's rhythm (the critic)
 - `scripts/beat-map.mjs` — BPM, beats, downbeats, drop and sections of a music track → JSON
+- `scripts/voice-map.mjs` — voiceover → words/phrases/pauses (ElevenLabs alignment or STT, script+pauses, or Whisper)
+- `scripts/footage.mjs` — search / fetch (CC-first) / import / moments / clip (loudness-matched) / credits
 
 ## Output format
 

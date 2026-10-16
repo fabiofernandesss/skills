@@ -117,3 +117,37 @@ export const contactSheet = (tiles, tileW, tileH, cols, gap = 8, bg = [20, 20, 2
 
 /** Decode any image/video file's first frame to RGB24 at w×h. */
 export const decodeImage = async (file, w, h) => (await rawFrames(file, w, h, "rgb24"))[0];
+
+/**
+ * Directory with `ffmpeg` / `ffprobe` that external tools (yt-dlp) can call directly.
+ * Uses the binaries bundled with Remotion; on macOS/Linux they need their shared libraries on the
+ * library path, so tiny wrapper scripts are written to a temp dir. Returns null if not found.
+ */
+export const ffmpegDirForTools = async () => {
+  const fs = await import("node:fs");
+  const os = await import("node:os");
+  const path = await import("node:path");
+  const base = path.join(process.cwd(), "node_modules", "@remotion");
+  if (!fs.existsSync(base)) return null;
+  const dir = fs.readdirSync(base).find((d) => d.startsWith("compositor-") && fs.existsSync(path.join(base, d, process.platform === "win32" ? "ffmpeg.exe" : "ffmpeg")));
+  if (!dir) return null;
+  const real = path.join(base, dir);
+  if (process.platform === "win32") return real; // DLLs next to the .exe are found automatically
+  const wrap = path.join(os.tmpdir(), "remotion-ffmpeg-wrappers");
+  fs.mkdirSync(wrap, { recursive: true });
+  const libVar = process.platform === "darwin" ? "DYLD_LIBRARY_PATH" : "LD_LIBRARY_PATH";
+  for (const tool of ["ffmpeg", "ffprobe"]) {
+    const p = path.join(wrap, tool);
+    fs.writeFileSync(p, `#!/bin/sh\n${libVar}="${real}" exec "${path.join(real, tool)}" "$@"\n`);
+    fs.chmodSync(p, 0o755);
+  }
+  return wrap;
+};
+
+export { run as remotionTool };
+
+/** { duration } of any audio (or video) file, in seconds. */
+export const probeAudio = async (file) => {
+  const { stdout } = await run("ffprobe", ["-v", "error", "-show_entries", "format=duration", "-of", "json", file]);
+  return { duration: Number(JSON.parse(stdout).format.duration) };
+};

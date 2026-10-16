@@ -1,0 +1,328 @@
+{
+  "audio": "test/narracao.mp3",
+  "source": "elevenlabs-alignment",
+  "duration": 20.767,
+  "words": [
+    {
+      "text": "A",
+      "start": 0.25,
+      "end": 0.318
+    },
+    {
+      "text": "luz",
+      "start": 0.385,
+      "end": 0.588
+    },
+    {
+      "text": "do",
+      "start": 0.655,
+      "end": 0.79
+    },
+    {
+      "text": "sol",
+      "start": 0.858,
+      "end": 1.06
+    },
+    {
+      "text": "leva",
+      "start": 1.128,
+      "end": 1.398
+    },
+    {
+      "text": "cerca",
+      "start": 1.465,
+      "end": 1.803
+    },
+    {
+      "text": "de",
+      "start": 1.87,
+      "end": 2.005
+    },
+    {
+      "text": "oito",
+      "start": 2.073,
+      "end": 2.343
+    },
+    {
+      "text": "minutos",
+      "start": 2.41,
+      "end": 2.883
+    },
+    {
+      "text": "para",
+      "start": 2.95,
+      "end": 3.22
+    },
+    {
+      "text": "chegar",
+      "start": 3.288,
+      "end": 3.693
+    },
+    {
+      "text": "até",
+      "start": 3.76,
+      "end": 3.963
+    },
+    {
+      "text": "a",
+      "start": 4.03,
+      "end": 4.098
+    },
+    {
+      "text": "Terra.",
+      "start": 4.165,
+      "end": 4.57
+    },
+    {
+      "text": "Num",
+      "start": 4.99,
+      "end": 5.208
+    },
+    {
+      "text": "painel",
+      "start": 5.281,
+      "end": 5.717
+    },
+    {
+      "text": "solar,",
+      "start": 5.789,
+      "end": 6.225
+    },
+    {
+      "text": "essa",
+      "start": 6.298,
+      "end": 6.588
+    },
+    {
+      "text": "luz",
+      "start": 6.661,
+      "end": 6.879
+    },
+    {
+      "text": "vira",
+      "start": 6.951,
+      "end": 7.242
+    },
+    {
+      "text": "eletricidade.",
+      "start": 7.315,
+      "end": 8.259
+    },
+    {
+      "text": "Tudo",
+      "start": 8.679,
+      "end": 8.95
+    },
+    {
+      "text": "acontece",
+      "start": 9.018,
+      "end": 9.562
+    },
+    {
+      "text": "dentro",
+      "start": 9.63,
+      "end": 10.037
+    },
+    {
+      "text": "de",
+      "start": 10.105,
+      "end": 10.241
+    },
+    {
+      "text": "uma",
+      "start": 10.309,
+      "end": 10.512
+    },
+    {
+      "text": "célula",
+      "start": 10.58,
+      "end": 10.988
+    },
+    {
+      "text": "de",
+      "start": 11.056,
+      "end": 11.192
+    },
+    {
+      "text": "silício.",
+      "start": 11.26,
+      "end": 11.803
+    },
+    {
+      "text": "Escuta",
+      "start": 12.223,
+      "end": 12.64
+    },
+    {
+      "text": "só",
+      "start": 12.709,
+      "end": 12.849
+    },
+    {
+      "text": "como",
+      "start": 12.918,
+      "end": 13.196
+    },
+    {
+      "text": "um",
+      "start": 13.266,
+      "end": 13.405
+    },
+    {
+      "text": "professor",
+      "start": 13.474,
+      "end": 14.1
+    },
+    {
+      "text": "explica",
+      "start": 14.169,
+      "end": 14.656
+    },
+    {
+      "text": "isso.",
+      "start": 14.726,
+      "end": 15.073
+    },
+    {
+      "text": "Ou",
+      "start": 15.493,
+      "end": 15.636
+    },
+    {
+      "text": "seja:",
+      "start": 15.707,
+      "end": 16.064
+    },
+    {
+      "text": "o",
+      "start": 16.135,
+      "end": 16.207
+    },
+    {
+      "text": "mesmo",
+      "start": 16.278,
+      "end": 16.635
+    },
+    {
+      "text": "sol",
+      "start": 16.706,
+      "end": 16.92
+    },
+    {
+      "text": "que",
+      "start": 16.991,
+      "end": 17.205
+    },
+    {
+      "text": "ilumina",
+      "start": 17.277,
+      "end": 17.776
+    },
+    {
+      "text": "o",
+      "start": 17.848,
+      "end": 17.919
+    },
+    {
+      "text": "seu",
+      "start": 17.99,
+      "end": 18.204
+    },
+    {
+      "text": "dia",
+      "start": 18.276,
+      "end": 18.49
+    },
+    {
+      "text": "pode",
+      "start": 18.561,
+      "end": 18.846
+    },
+    {
+      "text": "acender",
+      "start": 18.918,
+      "end": 19.417
+    },
+    {
+      "text": "a",
+      "start": 19.488,
+      "end": 19.56
+    },
+    {
+      "text": "sua",
+      "start": 19.631,
+      "end": 19.845
+    },
+    {
+      "text": "casa.",
+      "start": 19.916,
+      "end": 20.273
+    }
+  ],
+  "phrases": [
+    {
+      "text": "A luz do sol leva cerca de oito minutos para chegar até a Terra.",
+      "start": 0.25,
+      "end": 4.57,
+      "firstWord": 0,
+      "lastWord": 13
+    },
+    {
+      "text": "Num painel solar, essa luz vira eletricidade.",
+      "start": 4.99,
+      "end": 8.259,
+      "firstWord": 14,
+      "lastWord": 20
+    },
+    {
+      "text": "Tudo acontece dentro de uma célula de silício.",
+      "start": 8.679,
+      "end": 11.803,
+      "firstWord": 21,
+      "lastWord": 28
+    },
+    {
+      "text": "Escuta só como um professor explica isso.",
+      "start": 12.223,
+      "end": 15.073,
+      "firstWord": 29,
+      "lastWord": 35
+    },
+    {
+      "text": "Ou seja:",
+      "start": 15.493,
+      "end": 16.064,
+      "firstWord": 36,
+      "lastWord": 37
+    },
+    {
+      "text": "o mesmo sol que ilumina o seu dia pode acender a sua casa.",
+      "start": 16.135,
+      "end": 20.273,
+      "firstWord": 38,
+      "lastWord": 50
+    }
+  ],
+  "pauses": [
+    {
+      "start": 4.57,
+      "end": 4.99
+    },
+    {
+      "start": 8.259,
+      "end": 8.679
+    },
+    {
+      "start": 11.803,
+      "end": 12.223
+    },
+    {
+      "start": 15.073,
+      "end": 15.493
+    },
+    {
+      "start": 16.064,
+      "end": 16.135
+    }
+  ]
+}
