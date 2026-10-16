@@ -19,6 +19,9 @@ the affected frames, repeat. Report honestly which items were checked.
 - [ ] Hook works in the first 1–2 s, even as a still
 - [ ] Storyboard sheet (1 still/s) reviewed and approved before the full render
 - [ ] `rhythm-audit.mjs` run on the render; every flag either fixed or justified
+- [ ] With music: `beat-map.mjs` used; cuts land on beats (`rhythm-audit --beats`), video length = whole bars
+- [ ] No single-frame pops; loops pass `rhythm-audit --loop` (last frame leads into frame 0)
+- [ ] Independent critic pass done (fresh subagent or harsh self-review), verdict "ship"
 - [ ] Each scene has one job and one hero move
 - [ ] Intensity curve has peaks AND pauses; the CTA is calm and long enough
 - [ ] Duration matches the real audio; nothing was compressed to fit an arbitrary length
@@ -40,6 +43,10 @@ the affected frames, repeat. Report honestly which items were checked.
 - [ ] Everything aligned to the grid; margins consistent
 - [ ] Critical content inside the platform safe zone (check with `SafeZoneGuide`)
 - [ ] No clipped descenders, no text touching frame edges, no collisions mid-animation
+
+## Sound
+- [ ] SFX aligned by their transient peak, not file start; clicks only on visible actions
+- [ ] Loudness ≈ −14 LUFS; voice clearly over music; a music-only version exported if useful
 
 ## Technical
 - [ ] Deterministic: no Math.random/Date/CSS animations/`useFrame`; re-render is identical

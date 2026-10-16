@@ -19,3 +19,36 @@ export const span = <K extends string>(c: Record<K, number>, from: K, to: K): nu
  */
 export const estimateSpeechSeconds = (script: string, wordsPerSecond = 2.7): number =>
   Math.round((script.split(/\s+/).filter(Boolean).length / wordsPerSecond) * 10) / 10;
+
+/**
+ * Beat helpers — feed them `beats`/`downbeats` (seconds) from scripts/beat-map.mjs.
+ *
+ *   const pulse = beatPulse(frame, fps, beats.downbeats);      // 1 on the hit → 0
+ *   <div style={{ scale: String(1 + 0.04 * pulse) }} />
+ *   <Sequence from={snapToBeat(2.1, beats.downbeats, fps)}>  // cut on the nearest downbeat
+ */
+export const beatPulse = (frame: number, fps: number, beatsSec: readonly number[], decaySec = 0.25): number => {
+  const t = frame / fps;
+  let last = -Infinity;
+  for (const b of beatsSec) {
+    if (b > t) break;
+    last = b;
+  }
+  const dt = t - last;
+  return dt < 0 || !Number.isFinite(dt) ? 0 : Math.exp(-dt / (decaySec / 3));
+};
+
+/** Index of the last beat at or before `frame` (-1 before the first). Use for per-beat switches. */
+export const beatIndex = (frame: number, fps: number, beatsSec: readonly number[]): number => {
+  const t = frame / fps;
+  let i = -1;
+  while (i + 1 < beatsSec.length && beatsSec[i + 1] <= t) i++;
+  return i;
+};
+
+/** Frame of the beat nearest to `seconds`. Snap cuts and hero hits to the music. */
+export const snapToBeat = (seconds: number, beatsSec: readonly number[], fps: number): number => {
+  let best = beatsSec[0] ?? seconds;
+  for (const b of beatsSec) if (Math.abs(b - seconds) < Math.abs(best - seconds)) best = b;
+  return Math.round(best * fps);
+};

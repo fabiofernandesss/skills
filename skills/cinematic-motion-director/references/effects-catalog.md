@@ -95,6 +95,7 @@ Custom effects: `createEffect()` from `remotion` (2d / webgl2 / webgpu backends)
 | `<Trail>` | Stylised echo of previous positions, not realistic blur. |
 
 `shutterAngle` 180 = film look. Samples 6–10 is usually enough; more = slower renders.
+Whips and very fast slides ghost with 4 samples — use 8. Never blur text that is being read.
 
 ## 4. Light leaks
 

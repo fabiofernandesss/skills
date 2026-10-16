@@ -1,5 +1,5 @@
 import React from "react";
-import { random, useCurrentFrame, type EasingFunction } from "remotion";
+import { random, useCurrentFrame, useVideoConfig, type EasingFunction } from "remotion";
 import { ease, mix, progress } from "./easing";
 
 /**
@@ -238,6 +238,42 @@ export const Highlight: React.FC<
       }}
     >
       {children}
+    </span>
+  );
+};
+
+/**
+ * Typewriter: characters appear at a keystroke rhythm; the caret blinks only when idle.
+ * Purpose: prompts, search fields, command palettes, code. Not for headlines.
+ * `cps` = characters per second (human typing ≈ 12–18). `jitter` varies keystroke timing,
+ * seeded so it is deterministic.
+ */
+export const Typewriter: React.FC<{
+  text: string;
+  start?: number;
+  cps?: number;
+  jitter?: number;
+  seed?: string;
+  caret?: string;
+  caretColor?: string;
+  style?: React.CSSProperties;
+}> = ({ text, start = 0, cps = 15, jitter = 0.35, seed = "type", caret = "▍", caretColor, style }) => {
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+  // Keystroke times with seeded human jitter.
+  let t = start;
+  let shown = 0;
+  let lastKey = start;
+  for (let i = 0; i < text.length; i++) {
+    t += (fps / cps) * (1 + (random(`${seed}-${i}`) - 0.5) * 2 * jitter);
+    if (frame >= t) (shown = i + 1), (lastKey = t);
+  }
+  const idle = frame - lastKey > fps * 0.25 || shown === 0;
+  const blinkOn = !idle || Math.floor((frame - lastKey) / (fps * 0.5)) % 2 === 0;
+  return (
+    <span style={{ whiteSpace: "pre-wrap", ...style }}>
+      {text.slice(0, shown)}
+      <span style={{ opacity: blinkOn ? 1 : 0, color: caretColor }}>{caret}</span>
     </span>
   );
 };

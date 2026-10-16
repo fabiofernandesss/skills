@@ -38,9 +38,21 @@ export const rawFrames = async (file, w, h, pixFmt = "gray") => {
   return frames;
 };
 
+/** Mono audio as Float32Array in [-1, 1] at `sampleRate` (any format ffmpeg can read). */
+export const decodeMono = async (file, sampleRate = 11025) => {
+  const { stdout } = await run("ffmpeg", ["-loglevel", "error", "-i", file, "-vn", "-ac", "1", "-ar", String(sampleRate), "-c:a", "pcm_s16le", "-f", "wav", "-"], { binary: true });
+  // Piped WAV has no reliable sizes: find the "data" chunk and read to the end.
+  let o = 12;
+  while (o + 8 <= stdout.length && stdout.toString("ascii", o, o + 4) !== "data") o += 8 + stdout.readUInt32LE(o + 4);
+  const pcm = stdout.subarray(o + 8);
+  const out = new Float32Array(Math.floor(pcm.length / 2));
+  for (let i = 0; i < out.length; i++) out[i] = pcm.readInt16LE(i * 2) / 32768;
+  return out;
+};
+
 /** Silence intervals [{start, end}] in seconds, via ffmpeg silencedetect. */
 export const silences = async (file, noiseDb = -35, minSeconds = 0.25) => {
-  const { stderr } = await run("ffmpeg", ["-i", file, "-af", `silencedetect=noise=${noiseDb}dB:d=${minSeconds}`, "-f", "null", "-"]);
+  const { stderr } = await run("ffmpeg", ["-i", file, "-vn", "-af", `silencedetect=noise=${noiseDb}dB:d=${minSeconds}`, "-f", "null", "-"]);
   const out = [];
   let start = null;
   for (const line of stderr.split("\n")) {

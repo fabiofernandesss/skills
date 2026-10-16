@@ -151,6 +151,8 @@ npx remotion studio                                   # live preview
 node <skill-dir>/scripts/review-frames.mjs --comp Main --count 10 --scale 0.4   # review stills
 node <skill-dir>/scripts/review-frames.mjs --comp Main --every 1 --sheet         # storyboard sheet, 1 still/s
 node <skill-dir>/scripts/rhythm-audit.mjs out/main.mp4 --audio public/voice.mp3 # rhythm critic on the render
+node <skill-dir>/scripts/beat-map.mjs public/music.mp3 --out src/beats.json      # music first: BPM, beats, drop
+node <skill-dir>/scripts/rhythm-audit.mjs out/main.mp4 --beats src/beats.json --loop
 npx remotion still Main out/frame.png --frame=120     # one frame
 npx remotion render Main out/main.mp4                 # H.264 MP4
 npx remotion render Main out/main.mp4 --crf=18        # higher quality

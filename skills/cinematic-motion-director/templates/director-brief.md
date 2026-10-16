@@ -5,12 +5,18 @@ results come from briefs with these six parts. Before building, turn every reque
 brief — fill what you can from the conversation and the project, ask once for the missing
 **real inputs**, and mark assumptions.
 
+Write it with tags so each part stays separate (the structure the strongest prompts use):
+`<inputs>` `<direction>` `<structure>` `<build>` `<gotchas>` `<start>`. Use numbers, not
+adjectives: hex codes, seconds, damping ratios, pixel sizes, BPM.
+
 ## 1. Inputs (use only these)
 - Product / subject name:
 - Promise in one line:
 - Real moments: screenshots, footage, quotes, features, numbers (with source)
 - Brand: accent hex, fonts, logo file
 - Link / CTA:
+
+For every input you ask for, state the default you'll use if the user skips it.
 
 > Never invent features, numbers, testimonials, logos or claims. If an input is missing,
 > use a visible placeholder (`[NÚMERO]`) and tell the user — don't fill it with plausible fiction.
@@ -38,11 +44,19 @@ output: Remotion composition + MP4 (or a single self-playing HTML if explicitly 
 13.5–15.0 s logo + one CTA line + link; hold the last frame
 ```
 
-## 6. Checks before delivering
+## 6. Build & gotchas
+- Pure function of the frame; state changes as sums of springs (`springSteps`).
+- Music: beat map first (`beat-map.mjs`); moves start ~2 frames before the beat.
+- Known traps for this kind of piece (copy the relevant ones from `scene-recipes.md` →
+  "Technical gotchas"), plus anything that already went wrong in this project.
+
+## 7. Checks before delivering
 - Storyboard sheet with one still per second (`review-frames.mjs --every 1 --sheet`) shown to
   the user **before** the full render; render only after OK (unless running autonomously).
 - `rhythm-audit.mjs` on the render: no dead stretches, hook opens in motion, cuts on pauses.
 - `quality-checklist.md`.
+- End report: decisions made (and why), what was measured, and the 3–5 parameters that tune
+  the result (e.g. spring damping, morph duration, accent hex, BPM offset).
 
 ---
 

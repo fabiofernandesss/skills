@@ -152,3 +152,33 @@ moves (it only softens the image).
   `cues(fps, {...})`. Don't guess timings by watching.
 - Sound-off viewing is the default on social: the story must work muted. On-screen text
   carries the message; audio adds energy.
+
+## 10. Field numbers (measured in director-grade prompts, Oct 2026)
+
+Defaults worth starting from — tune by eye after the first review sheet.
+
+| Thing | Number |
+|-------|--------|
+| UI shape spring | damping ratio ~0.7 (tiny overshoot), settles ~0.35–0.4 s — kit `SHAPE_SPRING` |
+| Camera spring | critically damped (1.0), settles ~0.6 s, AFTER the subject — kit `CAMERA_SPRING` |
+| Morph / glide | 0.5–0.8 s, e.g. cubic-bezier(.45,0,.15,1); camera zoom rides the same curve |
+| Word pull-up | 20 px → 0 over 0.6 s, stagger 0.08 s, cubic-bezier(.16,1,.3,1) |
+| Content swap inside a morph | ~12 px blur + fade over ~0.15 s; enter after the container starts, leave before the next morph |
+| Beat anticipation | start the move ~0.05 s (1–2 frames) before the beat so the peak lands ON it |
+| "Arrive fast, land soft" | cover ~12–19% of the remaining distance per frame (exponential approach) |
+| Stagger | 2–4 frames; 1/16 note at 120 BPM = 125 ms |
+| Cursor speed | ≤ ~65 px/frame at 60 fps; aim where the target will be |
+| Promo density | a new visual idea about every 1–1.5 s; 12–15 compositions per 30 s |
+| Holds | no frozen hold > ~1 s — put a slow push (1.03–1.07) or breath on it; but give the key line ≥ 400 ms of real stillness and a 0.7 s reading hold |
+| Feature on screen | ≥ 2.5 s when the viewer must follow a UI action |
+| Reading size | ≥ 64 px for the phrase being read (1080 wide); motion blur never on active text |
+| Motion-blur samples | 4–6 normal moves; 8 for whips (fewer ghost) |
+| Loudness | −14 LUFS integrated; voice 10–15 dB over music |
+
+**Holds vs. density.** These don't conflict: text stays readable for its full read time
+(§5) while *something else* keeps evolving — a slow push, a breath, a counter, the cursor.
+What must not happen is the whole frame freezing (`rhythm-audit` flags it).
+
+**Camera grammar from the field:** one eased move per scene; never zoom in then straight
+back out; never reverse direction mid-move; zoom in log space for big scale changes; the
+camera eases slower than the subject; each gesture motivates the next camera move.

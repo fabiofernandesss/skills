@@ -59,6 +59,21 @@ yt-shorts, feed), `useSafeArea(zone)` → px insets, `<SafeZoneGuide zone>` over
 
 ## sync.ts
 `cues(fps, {name: seconds})` → frames, `span(cues, a, b)`, `estimateSpeechSeconds(text, wps)`.
+Music (feed `beats.json` from `scripts/beat-map.mjs`): `beatPulse(frame, fps, beats, decay)`
+→ 1 on the hit decaying to 0, `beatIndex(frame, fps, beats)`, `snapToBeat(seconds, beats, fps)`.
+
+## ui.tsx
+| Component | Purpose | Key props |
+|-----------|---------|-----------|
+| `Cursor` | Pointer that travels in arcs and clicks (press + ripple) — cause → effect demos | `path: {x, y, at, click?, travel?}[]`, `travel`, `color`, `ring` |
+| `MorphBox` | ONE element morphing size/radius/color/position through states; content leaves fast, enters late, ≤ 4 px blur; same-content states (hover) don't swap | `states: {at, w, h, radius, bg, x?, y?, content}[]`, `duration`, `easing`, `contentOut`, `contentIn`, `blur` |
+| `Handoff` | Shared-element transition: one accent carrier travels between states, drawing the source glyph at its start and the target glyph at its end — the accent never disappears | `hops: {at, from, to, dur?}[]` with spots `{x, y, d, node?, onDot?, spin?}`, `color` |
+
+Working example: `showcase/cinematic-motion-director/src/UiMorph.tsx` in the skills repo.
+
+## More in easing.ts / text.tsx
+- `springSteps(frame, fps, [{at, value}…], config)` — a value with many targets as a sum of springs (pure function of the frame). `SHAPE_SPRING` (ratio ~0.73) and `CAMERA_SPRING` (critical, slower).
+- `Typewriter` — keystroke rhythm with seeded jitter; caret blinks only when idle. Props: `text`, `start`, `cps`, `jitter`.
 
 ## Extending
 Follow the same contract: props in frames, `progress`/`tween` for every value, a header

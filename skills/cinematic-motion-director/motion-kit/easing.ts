@@ -1,4 +1,4 @@
-import { Easing, interpolate, type EasingFunction, type InterpolateOptions } from "remotion";
+import { Easing, interpolate, spring, type EasingFunction, type InterpolateOptions } from "remotion";
 
 /**
  * Named curves. Pick by INTENT, not by taste:
@@ -9,6 +9,7 @@ import { Easing, interpolate, type EasingFunction, type InterpolateOptions } fro
  * - snap:       whip pans, hard energy beats; spends almost no time in the middle
  * - anticipate: a small pull-back before the move (back-in)
  * - overshoot:  passes the target and settles (back-out). Use on 1 element per beat, max.
+ * - overshootSoft: the same, barely — UI shape morphs that must feel physical, not bouncy
  * - spring:     physical settle with no bounce
  * - bouncy:     playful settle; only for brands that allow it
  */
@@ -21,6 +22,7 @@ export const ease = {
   snap: Easing.bezier(0.85, 0, 0.15, 1),
   anticipate: Easing.bezier(0.36, 0, 0.66, -0.56),
   overshoot: Easing.bezier(0.34, 1.56, 0.64, 1),
+  overshootSoft: Easing.bezier(0.34, 1.25, 0.64, 1), // tiny overshoot: UI morphs, cards, toggles
   spring: Easing.spring({ damping: 200 }),
   bouncy: Easing.spring({ damping: 12, stiffness: 120 }),
 } satisfies Record<string, EasingFunction>;
@@ -57,3 +59,27 @@ export const progress = (
 
 /** Linear blend helper for values driven by a 0..1 progress. */
 export const mix = (a: number, b: number, t: number): number => a + (b - a) * t;
+
+/**
+ * A value that changes target several times, as ONE pure function of the frame:
+ * the sum of one spring per target change (no state carried between frames).
+ *
+ *   const w = springSteps(frame, fps, [{ at: 0, value: 420 }, { at: 60, value: 640 }, { at: 120, value: 405 }]);
+ *
+ * SHAPE_SPRING: damping ratio ≈ 0.73 → a tiny overshoot, settles in ~0.4 s (UI shapes, cards).
+ * CAMERA_SPRING: critically damped (ratio 1.0), slower — the camera settles AFTER the subject.
+ * Ratio = damping / (2·√(stiffness·mass)). Keep shapes 0.6–0.8; never below 0.5 on UI.
+ */
+export const SHAPE_SPRING = { damping: 19, stiffness: 170, mass: 1 } as const;
+export const CAMERA_SPRING = { damping: 19.4, stiffness: 94, mass: 1 } as const;
+
+export const springSteps = (
+  frame: number,
+  fps: number,
+  steps: readonly { at: number; value: number }[],
+  config: { damping?: number; stiffness?: number; mass?: number } = SHAPE_SPRING,
+): number =>
+  steps.reduce(
+    (v, s, i) => (i === 0 ? s.value : v + (s.value - steps[i - 1].value) * (frame < s.at ? 0 : spring({ frame: frame - s.at, fps, config }))),
+    0,
+  );

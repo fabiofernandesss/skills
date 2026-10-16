@@ -31,7 +31,9 @@ Esta skill faz o agente trabalhar como um **diretor de arte + motion designer s�
 - 📣 **Criativos para anúncios** — templates orientados a dados (zod), safe zones de Reels/TikTok, variações em lote para pipelines com IA.
 - 🎙️ **Vídeo de fala** — legendas em português (Whisper), estilos Pílula/Karaokê/Caixa, corte de pausas, punch-ins e cenas animadas por cima do rosto.
 - 🚫 **Só insumos reais** — não inventa recurso, número nem depoimento; trabalha com uma lista de proibições para não parecer template.
-- 🔍 **Revisa o próprio trabalho** — storyboard com 1 quadro por segundo para você aprovar antes do render, e um **crítico de ritmo** que mede o vídeo renderizado.
+- 🎵 **Música primeiro** — mede BPM, batidas, compassos e o drop da sua trilha; cortes caem no compasso, impactos na batida.
+- 🧩 **18 receitas de cena** — "uma forma, zero cortes", cursor guiando a UI real, tomada contínua, viagem de escala, explicativo que simula de verdade… com números medidos em ~80 prompts de nível diretor.
+- 🔍 **Revisa o próprio trabalho** — storyboard para você aprovar antes do render, um **crítico de ritmo** que mede o vídeo renderizado e um **crítico independente** que dá nota e decide "pode publicar" ou "mais uma passada".
 
 <img src="../../assets/cinematic-motion-director/frames.jpg" alt="Quadros do vídeo demo: hook, contraste de curvas, pipeline, quadro a quadro, CTA" />
 
@@ -103,6 +105,36 @@ Nosso SaaS já gera vídeos com Remotion a partir de JSON. Melhora o template pa
 
 O agente vai: analisar → medir o tempo → propor direção de arte e storyboard → construir no Remotion → renderizar quadros e revisar → entregar o vídeo + código editável.
 
+## 🎵 Demo 2 — "1 forma, 0 cortes", no ritmo da música
+
+<table><tr>
+<td width="330"><img src="../../assets/cinematic-motion-director/ui-morph.gif" width="320" alt="Um único elemento vira botão, campo de prompt, anel de progresso e card de vídeo, guiado por um cursor, no ritmo de 120 BPM" /></td>
+<td valign="top">
+
+Um único elemento vira **prompt → anel de render → vídeo tocando → botão** e volta, guiado por cliques reais de um cursor. Cada troca cai num compasso de uma faixa a 120 BPM medida pelo `beat-map.mjs`, um único ponto laranja é **passado de estado para estado** (↑ → cabeça do anel → ▶ → disco → ✦ → ↑) e o último quadro emenda no primeiro.
+
+Feito com o processo que a skill ensina — um **crítico independente** (agente novo a cada rodada, sem saber o que foi corrigido) até o veredito "ship":
+
+| Rodada | Nota | O que o crítico pegou |
+|:-:|:-:|---|
+| 1 | 4/10 | cor do container passava por cinza "desabilitado"; contador e arco discordavam; 2,75 s parado |
+| 2 | 6,5 | quadro vazio exatamente na batida; hover apagava o rótulo |
+| 3 | 5,5 | transições eram *dissolve*, não *morph*; botão sem hover/press reais |
+| 4 | 7 | o laranja sumia em todo morph → nasceu o `Handoff` |
+| 5–6 | 7,5 | conteúdo sumindo em 1 quadro (bug do kit), trocas secas de glifo |
+| 7 | 7,5 | **ship** ✓ |
+
+<sub><a href="../../assets/cinematic-motion-director/ui-morph.mp4">MP4 com áudio</a> · código: <a href="../../showcase/cinematic-motion-director/src/UiMorph.tsx">UiMorph.tsx</a></sub>
+
+</td></tr></table>
+
+```text
+$ node scripts/beat-map.mjs public/musica.mp3 --out src/beats.json
+public/musica.mp3 · 10.5 s · 120.08 BPM · 22 beats · 6 bars
+first downbeat 0 s · drop none found
+bar length 2.001 s → good cut points: downbeats; hits: beats; big reveal: drop
+```
+
 ## 🎞️ Aprovação por storyboard + crítico de ritmo
 
 Antes do render final, a skill gera **um quadro por segundo numa imagem só** para você aprovar:
@@ -170,6 +202,7 @@ cinematic-motion-director/
 │   ├── remotion-implementation.md# setup, fontes, áudio, 3D, render, armadilhas
 │   ├── ad-creatives.md           # anúncios, safe zones, variações, pipelines de IA
 │   ├── talking-head-captions.md  # vídeo de fala: Whisper, estilos de legenda, cortes, overlays
+│   ├── scene-recipes.md          # 18 receitas de cena com números, proibições padrão, armadilhas
 │   └── reference-library.md      # BUCK, Ordinary Folk, School of Motion… e o que extrair
 ├── templates/
 │   ├── director-brief.md         # transforma pedido vago em brief de diretor (6 partes)
@@ -180,7 +213,8 @@ cinematic-motion-director/
 ├── motion-kit/                   # presets TypeScript prontos (copiados para o projeto)
 └── scripts/
     ├── review-frames.mjs         # quadros de revisão; --every 1 --sheet = storyboard numa imagem
-    ├── rhythm-audit.mjs          # crítico de ritmo do vídeo renderizado
+    ├── rhythm-audit.mjs          # crítico de ritmo: trechos parados, pops, cortes vs batida/voz, emenda de loop
+    ├── beat-map.mjs              # música primeiro: BPM, batidas, downbeats, drop → JSON
     └── lib/media.mjs             # helpers sem dependências (ffmpeg do próprio Remotion)
 ```
 
@@ -188,13 +222,14 @@ cinematic-motion-director/
 
 | Módulo | Presets |
 |--------|---------|
-| `text` | `MaskReveal` · `WordStagger` · `CharCascade` · `TrackingIn` · `Scramble` · `Highlight` |
+| `text` | `MaskReveal` · `WordStagger` · `CharCascade` · `TrackingIn` · `Scramble` · `Highlight` · `Typewriter` |
 | `camera` | `Camera` + `Layer depth` (push, dolly, roll, parallax, handheld) |
 | `shapes` | `DrawLine` · `GridReveal` · `IrisReveal` · `CountUp` |
 | `texture` | `Grain` · `Vignette` |
-| `easing` | curvas por intenção + `tween()` |
+| `easing` | curvas por intenção, `tween()`, `springSteps` (molas de forma e de câmera) |
 | `formats` | formatos sociais, safe zones, guia visual |
-| `sync` | cue points do áudio → frames |
+| `sync` | cue points do áudio → frames; `beatPulse`, `snapToBeat` para música |
+| `ui` | `Cursor` (cliques com arco e ondulação) · `MorphBox` (uma forma, todos os estados) · `Handoff` (o acento nunca some entre estados) |
 
 ## ✅ O que foi testado
 
@@ -203,7 +238,9 @@ cinematic-motion-director/
 - Template de anúncio renderizado em 9:16 (com guias de safe zone), 4:5 e 1:1
 - Transição com shader (`zoomBlur`) renderizada via CLI sem flags
 - `scripts/review-frames.mjs` testado, inclusive com `calculateMetadata`, props e `--every 1 --sheet`
-- `scripts/rhythm-audit.mjs` testado em 2 vídeos renderizados e com áudio sintético (detecção de pausas)
+- `scripts/rhythm-audit.mjs` testado em 3 vídeos renderizados e com áudio sintético (pausas, batidas, emenda de loop, pops)
+- `scripts/beat-map.mjs` testado em faixas sintéticas de 96, 124 e 140 BPM: BPM exato, primeiro downbeat e drop corretos, erro ≤ 38 ms (~1 quadro)
+- Demo "1 forma, 0 cortes" renderizada com áudio: `MorphBox`, `Cursor`, `Handoff`, `Typewriter`, `springSteps`, `beatPulse` — 3/3 mudanças na batida, emenda do loop 0,0027 vs 0,0032 dos quadros vizinhos, 7 rodadas de crítico independente até "ship"
 
 ## Requisitos
 

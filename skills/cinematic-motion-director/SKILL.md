@@ -1,6 +1,6 @@
 ---
 name: cinematic-motion-director
-description: Art-directs and builds premium motion-design videos in code (Remotion + React + TypeScript) — kinetic typography, 2.5D/3D camera, parallax, refined easing, cinematic transitions, audio sync and real renders. Use when the user wants a motion graphics video, Reel/TikTok/Shorts, explainer, product or SaaS promo, animated title, kinetic-type piece, video ad creative or ad variations, "After Effects-style" animation, or asks to animate a script, voiceover or briefing; also for talking-head edits with captions and motion overlays, and when improving an existing Remotion video ("make this transition smoother", "this looks like a slideshow"). Works inside existing Remotion projects and AI pipelines that generate ad creatives from data.
+description: Art-directs and builds premium motion-design videos in code (Remotion + React + TypeScript) — kinetic typography, 2.5D/3D camera, parallax, refined easing, cinematic transitions, beat-synced music, UI/product demos with cursor and shape morphs, and real renders. Use when the user wants a motion graphics video, Reel/TikTok/Shorts, explainer, product or SaaS promo, animated title, kinetic-type piece, video ad creative or ad variations, "After Effects-style" animation, or asks to animate a script, voiceover or briefing; also for talking-head edits with captions and motion overlays, and when improving an existing Remotion video ("make this transition smoother", "this looks like a slideshow"). Works inside existing Remotion projects and AI pipelines that generate ad creatives from data.
 ---
 
 # Cinematic Motion Director
@@ -46,11 +46,19 @@ from it (captions/transcript timestamps) — never guess by eye. Without audio, 
 narration at ~2.7 words/s (`estimateSpeechSeconds` in the kit). Never compress a long script
 into a short format: cut the script or extend the video, and tell the user which.
 Mark the emphasis words and the narrative pauses.
+**Music first:** with a track, run `scripts/beat-map.mjs track.mp3 --out src/beats.json`
+(BPM, beats, downbeats, drop) BEFORE storyboarding. Cuts on downbeats, hits on beats, the
+big reveal on the drop; video length = whole bars. Speech is the exception: voice follows
+phrase cues, never a beat grid.
 
 **C — Concept.** Write `direction.md` from `templates/art-direction.md`: one visual metaphor,
 palette, type, grid, shape vocabulary, materials/light, camera grammar, transition grammar,
 intensity curve, effect budget. Read `references/art-direction.md`. Create a direction for
 THIS project; the kit's default (`signalNoir`) is a starting point, never the answer.
+Pick 1–2 skeletons from `references/scene-recipes.md` (one-shape morph loop, continuous
+take, accent thread, cursor-driven UI, beat-cut promo, scale journey, mechanism-as-proof…)
+and start the prohibition list from its "default prohibition list". Specify with numbers,
+not adjectives: hex codes, seconds, damping ratios, pixel sizes.
 
 **D — Storyboard.** Fill `templates/storyboard.md`: every scene gets a narrative job, time
 range, on-screen text, composition, camera, the hero move, transition out, sound. Each
@@ -62,6 +70,9 @@ becomes the next) over generic transitions.
 project (`src/motion/`), express the direction as a `Direction` object, one component per
 scene, all tunables (colors, sizes, durations, easing) in one place. For exact Remotion API
 details rely on the official Remotion skills or docs — never invent APIs.
+Long pieces (> ~30 s or > 8 scenes): once `direction.ts`, the beat/cue map and the storyboard
+are fixed, scenes are independent components — if your environment can spawn subagents,
+build them in parallel (one scene each, same direction file, same cue map), then integrate.
 
 **F — Review.** Two passes, both measured, not imagined:
 1. *Storyboard sheet* — `scripts/review-frames.mjs --comp X --every 1 --sheet` renders one
@@ -71,7 +82,16 @@ details rely on the official Remotion skills or docs — never invent APIs.
    autonomous runs).
 2. *Rhythm critic* — render, then `scripts/rhythm-audit.mjs out/video.mp4 [--audio voice.mp3]`:
    motion-energy curve, cuts, shot lengths, dead stretches, calm-frame ratio, cuts vs. voice
-   pauses. Treat flags as questions; look at those moments, fix, re-render.
+   pauses (`--audio`), cuts vs. the beat grid (`--beats`), single-frame pops, loop seam
+   (`--loop`). Treat flags as questions; look at those moments, fix, re-render.
+3. *Independent critic* — the builder never grades its own work. If you can spawn a
+   subagent, give a fresh one only the brief, the sheet (`--every 0.25` near transitions) and
+   the audit; tell it nothing about what you fixed. It returns a ranked, timestamped problem
+   list scored 1–10 per scene and a verdict: **ship** or **one more pass**. Fix the 3 worst,
+   re-run, keep a short ledger (round, issue, before → after). Without subagents, do the same
+   pass yourself as a harsh director, after a full re-read of the brief.
+   The audit measures *timing*; only eyes judge *taste*. Our own demo passed the audit with
+   "no flags" and still scored 4/10 with a fresh critic — run both, every time.
 Use `templates/quality-checklist.md`.
 
 **G — Deliver.** Final render + source + how to edit (where the direction lives, how to
@@ -117,7 +137,10 @@ Read `motion-kit/README.md` for the full API.
 - `shapes.tsx` — `DrawLine`, `GridReveal`, `IrisReveal`, `CountUp`
 - `texture.tsx` — deterministic `Grain`, `Vignette`
 - `formats.tsx` — `FORMATS`, `SAFE_ZONES`, `useSafeArea`, `SafeZoneGuide`
-- `sync.ts` — `cues()` to turn audio timestamps into frames, `estimateSpeechSeconds`
+- `sync.ts` — `cues()`, `estimateSpeechSeconds`, and music sync: `beatPulse`, `beatIndex`, `snapToBeat`
+- `ui.tsx` — `Cursor` (arc travel, press + ripple), `MorphBox` ("one shape, never cut"), `Handoff` (accent carried through every morph)
+- `easing.ts` also: `springSteps` (one value, many targets, pure function of frame), `SHAPE_SPRING`, `CAMERA_SPRING`
+- `text.tsx` also: `Typewriter` (human keystroke rhythm, caret blinks only when idle)
 
 Presets are vocabulary, not a style. Combine them under the project's direction; write new
 components when the concept needs something the kit does not have.
@@ -133,6 +156,7 @@ components when the concept needs something the kit does not have.
 | Ads, variants, safe zones, AI pipelines, batch rendering | `references/ad-creatives.md` |
 | Talking-head edits, captions (Whisper), cutting pauses, overlays | `references/talking-head-captions.md` |
 | Turning a vague request into a director brief | `templates/director-brief.md` |
+| Proven scene skeletons with numbers, default prohibitions, technical gotchas | `references/scene-recipes.md` |
 | Studios and sources behind these rules | `references/reference-library.md` |
 | Worked examples | `examples/` |
 
@@ -140,6 +164,7 @@ components when the concept needs something the kit does not have.
 
 - `scripts/review-frames.mjs` — stills across the timeline; `--every 1 --sheet` = storyboard sheet
 - `scripts/rhythm-audit.mjs` — measures the rendered video's rhythm (the critic)
+- `scripts/beat-map.mjs` — BPM, beats, downbeats, drop and sections of a music track → JSON
 
 ## Output format
 
