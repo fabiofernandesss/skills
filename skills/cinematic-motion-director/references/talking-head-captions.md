@@ -72,9 +72,22 @@ Caption rules:
 
 ## 3. Editing the A-roll
 
-- **Cut the dead air.** `silencedetect` (see `scripts/lib/media.mjs` → `silences()`) gives
-  pauses; keep ~0.1 s of breath on each side. Render each kept segment as
-  `<Video src trimBefore trimAfter premountFor>` in a `<Series>`.
+- **Always remove the breaths and dead air — before anything else.** Audible inhales and
+  pauses between phrases make a talking head feel slow; creators expect them gone by default.
+  Run `scripts/cut-breaths.py raw.mp4 --out cut.mov --speed 1.10 --verify` (energy-based:
+  keeps only audio louder than speech level − 24 dB, collapses quiet stretches > 0.2 s,
+  pads 0.05 s / 0.07 s, 8 ms fades so cuts don't click). It cuts video and audio together
+  and writes `cut.timemap.json` (original time → new time).
+  - **Never cut on Whisper word gaps.** Word timestamps are unreliable at phrase edges; a
+    real edit lost the word "designers" that way. Cut on measured energy, then verify.
+  - **Verify every time:** `--verify` re-transcribes before/after and fails on any run of
+    missing words. Read the "possibly missing" list; single-word drift ("e", "o") is Whisper
+    noise, two or more consecutive words is a real cut → lower `--thr` and re-run.
+  - **Then speed up**, not before (`--speed`; 1.05–1.10 is natural for most creators —
+    ask once, remember the answer). Breath-removal alone usually takes 12–18 % off.
+  - **Re-time everything through the time map**: captions (re-transcribe the cut file, or map
+    word times), scene/overlay cues, punch-ins, SFX hits and music sections. Write cues once
+    on one timeline and convert with a single `M(t)` function — never hand-edit numbers.
 - **Hide jump cuts** with punch-ins: alternate scale 1.0 / 1.12–1.18 on consecutive segments
   (hard switch on the cut, not animated), centered on the face.
 - **Emphasis zooms:** slow push (1 → 1.06 over the sentence) on key statements; a fast punch
@@ -88,9 +101,18 @@ Caption rules:
 | Layout | When |
 |--------|------|
 | **Top scene** — motion card in the upper ~40% (below the top safe band), face below | Explaining a concept while talking; the scene illustrates the sentence |
+| **Split screen** — motion panel on top (≈ 1020 px), camera below (≈ 900 px), captions on the seam | Whole-video explainers; the face stays on screen the entire time |
 | **Full-screen insert** — 1–3 s cutaway to a motion scene, back to face | Proof, demo, number, before/after |
 | **Lower-third / label** — name, title, source | First appearance, citations |
 | **Overlay elements** — arrows, highlights, icons near the face | Light emphasis; never more than one at a time |
+
+Split-screen camera framing:
+- **The whole head must be visible** — hair to chin, with air above the hair. Pick the crop
+  from stills at 3–4 moments (people lean and move); size it from the face, not the frame.
+- Crop at the panel's aspect (e.g. 1080 × 900 → crop width × width·900/1080 from the source);
+  if the face still gets cut, make the camera panel taller rather than zooming in.
+- Punch-in zooms anchor near the eyes (`transformOrigin ≈ 50% 30%`) so they never crop the top of the head.
+- Low-res sources (WhatsApp, 576 px wide) look soft when upscaled: ask for the original file.
 
 Rules:
 - The overlay illustrates the exact words being said at that moment — derive timing from
@@ -101,6 +123,9 @@ Rules:
 
 ## 5. QA additions
 
+- [ ] Breaths/pauses removed with `cut-breaths.py --verify`; no run of missing words
+- [ ] All cues (captions, overlays, SFX, music) re-timed through the time map after the cut/speed-up
+- [ ] Split screen: whole head visible in the camera panel at every review frame
 - [ ] Transcript reviewed: names, brands, numbers correct
 - [ ] Captions inside safe zone, never over eyes/mouth, readable on a phone
 - [ ] No jump cut without a punch-in or insert to hide it

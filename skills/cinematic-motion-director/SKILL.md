@@ -93,6 +93,9 @@ build them in parallel (one scene each, same direction file, same cue map), then
    pass yourself as a harsh director, after a full re-read of the brief.
    The audit measures *timing*; only eyes judge *taste*. Our own demo passed the audit with
    "no flags" and still scored 4/10 with a fresh critic — run both, every time.
+4. *Spacing pass* — 3 frames per shot (start + 0.3 s, middle, end, and the peak of any grow),
+   tiled and inspected one by one for overlaps; repeat after every layout/timing change.
+   See `references/spacing-and-layout.md`.
 Use `templates/quality-checklist.md`.
 
 **G — Deliver.** Final render + source + how to edit (where the direction lives, how to
@@ -125,7 +128,15 @@ what was not. Never claim a render or a check that did not happen.
    a legal risk, not a creative choice.
 9. **Write prohibitions down.** Every direction lists what must NOT appear (particles,
    glitch, neon, shake…). Prohibitions are what keep AI video from looking like a template.
-10. **Verify versions before version-gated APIs.** Run `npx remotion versions`. Shader
+10. **Zero overlaps — spacing is correctness.** No element may touch or cover another (text vs
+   text, text vs captions, credits vs chips, a growing shape vs its label). Plan zones with
+   numbers, size lists/grids for their final count, check animated elements at their largest.
+   Before every delivery run the per-shot pass (3 frames per shot) from
+   `references/spacing-and-layout.md` — the 1-still/second sheet does not catch these.
+11. **Always remove breaths and dead air from real footage**, before speeding up and before
+   timing anything: `scripts/cut-breaths.py --verify` (energy-based, never Whisper word gaps),
+   then re-time every cue through the time map it writes.
+12. **Verify versions before version-gated APIs.** Run `npx remotion versions`. Shader
    transitions, `@remotion/effects`, `HtmlInCanvasMotionBlur`, `TransitionSeries.Overlay`
    and light leaks need recent 4.0.x releases (see `references/effects-catalog.md`).
 
@@ -161,6 +172,7 @@ components when the concept needs something the kit does not have.
 | Ads, variants, safe zones, AI pipelines, batch rendering | `references/ad-creatives.md` |
 | Talking-head edits, captions (Whisper), cutting pauses, overlays | `references/talking-head-captions.md` |
 | Building on a finished voiceover; YouTube/own footage, sound bites, rights, EDIT PLAN | `references/voiceover-and-footage.md` |
+| Zones, spacing, zero-overlap rule, the per-shot check | `references/spacing-and-layout.md` |
 | Turning a vague request into a director brief | `templates/director-brief.md` |
 | Proven scene skeletons with numbers, default prohibitions, technical gotchas | `references/scene-recipes.md` |
 | Studios and sources behind these rules | `references/reference-library.md` |
@@ -173,6 +185,7 @@ components when the concept needs something the kit does not have.
 - `scripts/beat-map.mjs` — BPM, beats, downbeats, drop and sections of a music track → JSON
 - `scripts/voice-map.mjs` — voiceover → words/phrases/pauses (ElevenLabs alignment or STT, script+pauses, or Whisper)
 - `scripts/footage.mjs` — search / fetch (CC-first) / import / moments / clip (loudness-matched) / credits
+- `scripts/cut-breaths.py` — removes breaths/pauses from talking-head footage (video+audio), optional speed-up, writes a time map, `--verify` re-transcribes and fails on missing words (Python: numpy; faster-whisper for `--verify`)
 
 ## Output format
 

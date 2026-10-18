@@ -246,6 +246,7 @@ cinematic-motion-director/
     ├── beat-map.mjs              # música primeiro: BPM, batidas, downbeats, drop → JSON
     ├── voice-map.mjs             # sua voz → palavras, frases e pausas (ElevenLabs, roteiro, Whisper)
     ├── footage.mjs               # buscar · baixar (CC) · importar · achar trechos · cortar · créditos
+    ├── cut-breaths.py            # tira respiros e pausas da gravação, acelera, mapa de tempo, --verify
     └── lib/media.mjs             # helpers sem dependências (ffmpeg do próprio Remotion)
 ```
 
@@ -275,11 +276,14 @@ cinematic-motion-director/
 - Demo "voz + cortes" renderizada com áudio: narração PT-BR (formato de saída do ElevenLabs com timestamps), b-roll, trecho com áudio original, legendas e créditos — loudness da narração e do trecho original igualadas (−13,30 vs −13,27 LUFS)
 - `voice-map.mjs`: caminhos "alinhamento ElevenLabs" e "só roteiro + áudio" testados (frases batem com ≤ 0,16 s de diferença); Whisper local implementado, não testado (download de ~466 MB)
 - `footage.mjs`: busca Creative Commons no YouTube testada; `import`, `moments`, `clip --match` e `credits` testados. O download (`fetch`) foi bloqueado pelo YouTube nesta rede ("confirme que não é um robô") — a skill trata isso com mensagem clara e alternativas, sem contornar
+- `cut-breaths.py` testado num talking head real de 60,7 s (vídeo de WhatsApp, PT-BR): tirou 8,8 s de respiros/pausas, com 1.10x ficou com 47,2 s, `--verify` passou (similaridade 0,972, nenhuma sequência de palavras perdida). Teste negativo: corte agressivo de propósito → `--verify` falhou e listou as frases perdidas
+- Regra de espaçamento (zero sobreposição) e revisão de 3 quadros por cena aplicadas num Reel de tela dividida de 35 cenas: a revisão achou 6 sobreposições que o storyboard de 1 quadro/segundo não mostrava
 - Demo "1 forma, 0 cortes" renderizada com áudio: `MorphBox`, `Cursor`, `Handoff`, `Typewriter`, `springSteps`, `beatPulse` — 3/3 mudanças na batida, emenda do loop 0,0027 vs 0,0032 dos quadros vizinhos, 7 rodadas de crítico independente até "ship"
 
 ## Requisitos
 
 - Node.js 18+ · um projeto [Remotion](https://www.remotion.dev) (a skill cria um se não existir)
+- Para `cut-breaths.py`: Python 3 + `numpy` e `ffmpeg` no PATH; `--verify` usa `faster-whisper` (`pip install faster-whisper`)
 - Uso comercial do Remotion: grátis para pessoas físicas e empresas com até 3 funcionários; acima disso exige [licença de empresa](https://www.remotion.dev/license).
 
 ---

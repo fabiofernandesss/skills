@@ -43,6 +43,15 @@ the affected frames, repeat. Report honestly which items were checked.
 - [ ] Everything aligned to the grid; margins consistent
 - [ ] Critical content inside the platform safe zone (check with `SafeZoneGuide`)
 - [ ] No clipped descenders, no text touching frame edges, no collisions mid-animation
+- [ ] **Zero overlaps** — per-shot pass done (3 frames per shot: start+0.3 s, middle, end, plus
+      the peak of any grow/scale), see `references/spacing-and-layout.md`; re-done after every
+      layout/timing change
+- [ ] Every zone has one owner; ≥ 32 px between zones; content ends ≥ 40 px above the caption band
+- [ ] Photo credits in one fixed spot that nothing else uses
+
+## Talking head / real footage
+- [ ] Breaths and dead air removed (`scripts/cut-breaths.py --verify`), speed-up applied after the cut
+- [ ] Every cue re-timed through the time map; nothing hand-shifted
 
 ## Sound
 - [ ] SFX aligned by their transient peak, not file start; clicks only on visible actions
