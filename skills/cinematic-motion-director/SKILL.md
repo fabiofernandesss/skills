@@ -141,7 +141,9 @@ work · the contact sheet was reviewed and approved cut by cut. Deliver every re
    beat; blur/glow/particles only when they carry meaning. Contrast fast with still, loud
    with quiet — rhythm comes from the pauses.
 6. **Sound serves the voice.** Visual accents land on stressed syllables and beats; music
-   ducks under narration; SFX support cuts, never cover words.
+   ducks under narration; SFX support cuts, never cover words. Effects come from the earshot
+   bank (`scripts/sfx-earshot.py`), aligned on their measured sync point with the measured
+   offsets, never raw oscillator beeps. See `references/sound-design.md`.
 7. **Rights before footage.** Third-party video only when it's Creative Commons (attributed
    on screen and in the description), the user's own, or the user states a specific right
    (`footage.mjs --rights`). Never bypass a platform's anti-bot or sign-in check.
@@ -201,6 +203,7 @@ components when the concept needs something the kit does not have.
 | Talking-head edits, captions (Whisper), cutting pauses, overlays | `references/talking-head-captions.md` |
 | Building on a finished voiceover; YouTube/own footage, sound bites, rights, EDIT PLAN | `references/voiceover-and-footage.md` |
 | Zones, spacing, zero-overlap rule, the per-shot check | `references/spacing-and-layout.md` |
+| Sound effects: roles, sync offsets, run gaps, levels vs voice/music, stop-downs, cheap-SFX checklist, earshot | `references/sound-design.md` |
 | Named styles (signature features + creative seed), saving a client style, format variants | `references/style-library.md` |
 | Lyric videos and word-level sync | `references/lyric-and-word-sync.md` |
 | Character rigs, emotion sheets, acting beats, painterly textures | `references/character-animation.md` |
@@ -219,7 +222,8 @@ components when the concept needs something the kit does not have.
 - `scripts/footage.mjs` — search / fetch (CC-first) / import / moments / clip (loudness-matched) / credits
 - `scripts/cut-breaths.py` — removes breaths/pauses from talking-head footage (video+audio), optional speed-up, writes a time map, `--verify` re-transcribes and fails on missing words (Python: numpy; faster-whisper for `--verify`)
 - `scripts/synth-score.py` — original music bed from a JSON section spec (pad, pluck, bass, drums, risers, booms, tension ticks), auto-ducked under the voice; no samples, no rights issues
-- `scripts/sfx.py` — synthesized SFX track: soft mouse clicks on cuts (3 variants), ticks on checkmarks, sub booms
+- `scripts/sfx-earshot.py` — SFX track from the earshot bank (252 designed effects as code: clicks, laptop keys, pops, knocks, shutters, dings, whooshes, hits, risers); cues.json of {t, role} → fx.wav aligned on each take's measured onset/peak with pro offsets and run gaps, level set against the voice, audited takes re-rolled (needs an earshot clone + numpy scipy soundfile soxr; no torch)
+- `scripts/sfx.py` — fallback synthesized SFX track: soft mouse clicks on cuts (3 variants), ticks on checkmarks, sub booms
 - `scripts/shot-pass.py` — per-shot spacing pass (3 frames per shot, labeled, tiled) or a contact sheet every N s
 - `scripts/avatar-sync.py` — re-times an AI-avatar clip's frames to the real narration (MFCC + DTW, or word anchors); drops the clip's own audio
 
@@ -237,7 +241,9 @@ components when the concept needs something the kit does not have.
 - **Absolute vs local time:** inside a shot, convert voice cues with one helper
   (`useAt(shotStart)(absCue)`); never mix the two units.
 - **SFX taste:** many creators find whooshes loud and generic — default to soft mouse clicks
-  on cuts, ~20 dB under the voice; offer no-music versions when they add music in-app.
+  on cuts, ~20 dB under the voice, typing ~25 dB under; offer no-music versions when they add
+  music in-app. Synthesized typewriter clacks were rejected as "horrible and loud": use the
+  earshot bank's laptop keys or a real CC0 typing recording, one key per character.
 - **Renders on small disks:** render one client with `--public-dir` holding only its assets
   (each bundle copies the whole `public/`) and delete `remotion-webpack-bundle-*` /
   `remotion-*-assets*` from the temp folder after renders.

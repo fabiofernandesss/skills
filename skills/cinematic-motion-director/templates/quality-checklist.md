@@ -54,7 +54,11 @@ the affected frames, repeat. Report honestly which items were checked.
 - [ ] Every cue re-timed through the time map; nothing hand-shifted
 
 ## Sound
-- [ ] SFX aligned by their transient peak, not file start; clicks only on visible actions
+- [ ] SFX aligned by their measured sync point (onset / whoosh peak), not file start; within 1 frame, never late by 2
+- [ ] Effects from the earshot bank or real recordings, not raw oscillator beeps; every take passed the audit
+- [ ] Round robin: no take repeated twice in a row; runs keep their gap and end on one accent
+- [ ] Restraint: riser → stop-down → hit at most twice; no big hit on a key word; effects 20–25 dB under the voice (UI) / 3–10 dB over a music bed
+- [ ] First sound within ~0.15 s; the ending lands at body level with a short fade
 - [ ] Loudness ≈ −14 LUFS; voice clearly over music; a music-only version exported if useful
 
 ## Technical

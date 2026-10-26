@@ -59,6 +59,7 @@ Use for *method*, not assets. License noted because it decides what can be reuse
 | PDoomVideo ✓ https://github.com/JohnHeibel/PDoomVideo | no license (study only) | Painterly cartoon per verse, subagent guide written by the model itself. |
 | Opus Video Prompts ✓ https://github.com/joeseesun/opus-video-prompts | see repo | 18 full prompts + 54 cases across 9 tech paths (Canvas, p5, Three, Remotion, Manim, Blender…). |
 | awesome-claude-5-5-videos ✓ https://github.com/athemeroy/awesome-claude-5-5-videos | see repo | 424 posts with cost/method analysis by model. |
+| earshot ✓ https://github.com/Leonxlnx/earshot (0.4.0) | MIT | Ears for agents: 252 designed SFX as code with an audit, a launch kit with measured offsets / bed levels / run gaps from pro clips, the 7-film launch-sound playbook, `critique` / `timeline` / `sheet`. → `sound-design.md`, `scripts/sfx-earshot.py` |
 | Guide "8 repositórios grátis pra fazer filme com o Claude Code" (fabiano.app, 2026-10) | — | Named cuts with times, storyboard stop, one-fix review loop, 6 pre-delivery checks, license awareness, start with 15–30 s. → SKILL.md workflow, `quality-checklist.md`, `prompts-pt.md` |
 
 ## Ads
