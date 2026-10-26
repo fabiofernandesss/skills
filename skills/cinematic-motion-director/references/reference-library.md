@@ -46,6 +46,21 @@ Link check: 2026-10-13 (repertoire section: 2026-10-13, GitHub API) (✓ = respo
 | Remotion TikTok template ✓ https://github.com/remotion-dev/template-tiktok | Whisper.cpp transcription + TikTok-style captions. → `talking-head-captions.md`. |
 | HyperFrames ✓ https://github.com/heygen-com/hyperframes (Apache-2.0) | Alternative engine: write HTML, render video, built for agents. Consider when a project is HTML-first; this skill's direction and review rules apply unchanged. |
 
+## Film-in-code repositories (checked 2026-10-25)
+
+Use for *method*, not assets. License noted because it decides what can be reused in paid work.
+
+| Source | License | Method extracted |
+|--------|---------|------------------|
+| Lemo-Opuscar ✓ https://github.com/lemomo-ai/lemo-opuscar | see repo | Named style library (59 styles), each = style prompt + demo; agent directs, scores, narrates and mixes; custom style derived from an existing one. → `style-library.md` |
+| 15 Motion Design Styles ✓ https://github.com/Vincentwei1021/mg-styles-15 | see repo | Style prompt split into *Signature features* (fixed) vs *Creative seed* (per client); music generated in code from instrument samples. → style-prompt structure, `synth-score.py` idea |
+| ClaudeAnimationBase ✓ https://github.com/JohnHeibel/ClaudeAnimationBase | MIT (code); the Clawd mascot is Anthropic's | Character rig with emotions, animation guide, storyboard → shot by shot → own contact sheets; GPU cost of painterly fills. → `character-animation.md` |
+| pdoom-video ✓ https://github.com/mexicat/pdoom-video | MIT (code only; song, lyrics and timings belong to their authors) | Word-level lyric sync, 17 scenes, 60 fps, timing analysis tools; heavy 4K renders. → `lyric-and-word-sync.md` |
+| PDoomVideo ✓ https://github.com/JohnHeibel/PDoomVideo | no license (study only) | Painterly cartoon per verse, subagent guide written by the model itself. |
+| Opus Video Prompts ✓ https://github.com/joeseesun/opus-video-prompts | see repo | 18 full prompts + 54 cases across 9 tech paths (Canvas, p5, Three, Remotion, Manim, Blender…). |
+| awesome-claude-5-5-videos ✓ https://github.com/athemeroy/awesome-claude-5-5-videos | see repo | 424 posts with cost/method analysis by model. |
+| Guide "8 repositórios grátis pra fazer filme com o Claude Code" (fabiano.app, 2026-10) | — | Named cuts with times, storyboard stop, one-fix review loop, 6 pre-delivery checks, license awareness, start with 15–30 s. → SKILL.md workflow, `quality-checklist.md`, `prompts-pt.md` |
+
 ## Ads
 
 | Source | Contribution |

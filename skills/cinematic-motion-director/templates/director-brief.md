@@ -35,7 +35,11 @@ like a template.
 `1080×1920 · 30 fps · 15 s` · keep text out of the platform UI bands (see `SAFE_ZONES`) ·
 output: Remotion composition + MP4 (or a single self-playing HTML if explicitly asked).
 
-## 5. Timeline with exact on-screen text
+## 5. Named cuts with times and exact on-screen text
+Name every cut and give its time range; say where the **main moment** is and what the music
+does there (e.g. "rises at 0:30, the main moment"). A style brief adds the three blocks from
+`references/style-library.md`: Signature features (fixed) · Creative seed (this video) ·
+Output spec (numbers).
 ```
 0.0–1.5 s   hook: "[3–5 words]", word by word
 1.5–5.0 s   problem: "[one sentence]" + an object that represents it

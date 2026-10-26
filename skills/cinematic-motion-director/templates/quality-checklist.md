@@ -66,6 +66,15 @@ the affected frames, repeat. Report honestly which items were checked.
 - [ ] Remotion packages + zod on matching versions; render has no warnings worth fixing
 - [ ] Final file plays, has audio (if any), right size/fps/duration
 
+## Before delivering (6 checks)
+- [ ] Hook on screen in the first 0.5 s, no black or empty first frame
+- [ ] Duration, format(s) and fps match the brief; every requested format delivered with its own spacing pass
+- [ ] All on-screen text legible on a phone and correctly spelled
+- [ ] Music is the user's, the client's (in writing) or generated in code
+- [ ] No third-party character, mascot or brand used as decoration in paid work; code/assets from other repos checked for license
+- [ ] Contact sheet reviewed and approved cut by cut (one-fix loop: worst stretch named, fixed, re-rendered)
+- [ ] Illustrated characters, logos and brand cards never cropped (hands, feet, edges visible)
+
 ## Delivery
 - [ ] Final render path, source path, and how to edit text/timing/colors
 - [ ] What was rendered and checked is stated; what was not is stated too

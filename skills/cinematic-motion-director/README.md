@@ -35,6 +35,13 @@ Esta skill faz o agente trabalhar como um **diretor de arte + motion designer s�
 - 🚫 **Só insumos reais** — não inventa recurso, número nem depoimento; trabalha com uma lista de proibições para não parecer template.
 - 🎵 **Música primeiro** — mede BPM, batidas, compassos e o drop da sua trilha; cortes caem no compasso, impactos na batida.
 - 🧩 **18 receitas de cena** — "uma forma, zero cortes", cursor guiando a UI real, tomada contínua, viagem de escala, explicativo que simula de verdade… com números medidos em ~80 prompts de nível diretor.
+- 🎨 **Biblioteca de estilos** — 12 linguagens prontas (Red Thread Noir, Claude Paper, Checklist, Notícia de Negócios, Keynote, Documentário de Dados, Vinheta Cromada…); a "semente criativa" muda por cliente, a assinatura do estilo não. Salve o estilo aprovado e reaproveite.
+- 🎤 **Clipe com letra** — cada palavra no quadro em que é cantada (60 fps), com checagem de direitos da música.
+- 🧸 **Personagem atuando** — rig como dados, folha de emoções aprovada antes, cenas com antecipação e reação; nunca corta mãos ou pés.
+- 📰 **Notícia com recorte real** — abre na manchete verdadeira (veículo + data) e usa fotos reais de quem é citado.
+- 🎼 **Trilha e efeitos gerados no código** — `synth-score.py` (trilha original que abaixa sob a voz) e `sfx.py` (cliques de mouse suaves nas transições), sem risco de direitos.
+- 🧑‍💻 **Avatar sincronizado** — `avatar-sync.py` reencaixa os quadros do avatar de IA na sua narração real.
+- 🇧🇷 **10 prompts prontos em português** — em `templates/prompts-pt.md`, com cortes nomeados e tempos.
 - 🔍 **Revisa o próprio trabalho** — storyboard para você aprovar antes do render, um **crítico de ritmo** que mede o vídeo renderizado e um **crítico independente** que dá nota e decide "pode publicar" ou "mais uma passada".
 
 <img src="../../assets/cinematic-motion-director/frames.jpg" alt="Quadros do vídeo demo: hook, contraste de curvas, pipeline, quadro a quadro, CTA" />

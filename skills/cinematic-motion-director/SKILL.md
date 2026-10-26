@@ -1,6 +1,6 @@
 ---
 name: cinematic-motion-director
-description: Art-directs and builds premium motion-design videos in code (Remotion + React + TypeScript) — kinetic typography, 2.5D/3D camera, parallax, refined easing, cinematic transitions, beat-synced music, UI/product demos with cursor and shape morphs, and real renders. Use when the user wants a motion graphics video, Reel/TikTok/Shorts, explainer, product or SaaS promo, animated title, kinetic-type piece, video ad creative or ad variations, "After Effects-style" animation, or asks to animate a script, voiceover or briefing; also for talking-head edits with captions, for building a full video on top of a finished voiceover (ElevenLabs or any narration) with B-roll and sound bites from YouTube or the user's footage, and when improving an existing Remotion video ("make this transition smoother", "this looks like a slideshow"). Works inside existing Remotion projects and AI pipelines that generate ad creatives from data.
+description: Art-directs and builds premium motion-design videos in code (Remotion + React + TypeScript) — kinetic typography, 2.5D/3D camera, parallax, refined easing, cinematic transitions, beat-synced music, UI/product demos with cursor and shape morphs, and real renders. Use when the user wants a motion graphics video, Reel/TikTok/Shorts, explainer, product or SaaS promo, animated title, kinetic-type piece, video ad creative or ad variations, "After Effects-style" animation, or asks to animate a script, voiceover or briefing; also for talking-head edits with captions, for building a full video on top of a finished voiceover (ElevenLabs or any narration) with B-roll and sound bites from YouTube or the user's footage, brand vignettes in a reusable named style (style library: signature features + creative seed), lyric videos synced word by word, short character-acting scenes, news-reaction reels that open on a real headline clipping, and when improving an existing Remotion video ("make this transition smoother", "this looks like a slideshow"). Works inside existing Remotion projects and AI pipelines that generate ad creatives from data.
 ---
 
 # Cinematic Motion Director
@@ -26,6 +26,9 @@ Identify the mode first; it changes how much you ask and what you deliver.
 | **C. Revision** | "smoother", "more premium", "too fast", a frame looks wrong | diagnose with frames + `rhythm-audit` → targeted fix → before/after frames |
 | **D. Talking head** | face-to-camera footage, captions/legendas, cut pauses, overlays on a creator video | transcript → caption style options → cuts, punch-ins, overlays. Read `references/talking-head-captions.md` |
 | **E. Voiceover edit** | "here's my ElevenLabs voice, build the video", B-roll/cortes from YouTube or own files, sound bites | voice map → footage (rights-checked) → EDIT PLAN → `EditTimeline` render. Read `references/voiceover-and-footage.md` |
+| **F. Style / vignette** | "same look for another client", channel/podcast opener, "use style X" | pick or save a style from `references/style-library.md`; edit only the Creative seed; deliver every requested format |
+| **G. Lyric video** | music + lyrics, "every word on the beat" | rights check → word timings verified on 10 lines → scene plan approved → 60 fps render. Read `references/lyric-and-word-sync.md` |
+| **H. Character scene** | a mascot/character acting a small story | rig as data → emotion sheet approved → acting beats → contact sheet per scene. Read `references/character-animation.md` |
 
 In an autonomous pipeline (no human in the loop), never block on questions: take the
 documented defaults, write your assumptions into the direction file, and continue.
@@ -41,6 +44,11 @@ the action you want at the end. Turn the request into a **director brief**
 exact text, checks. A one-line request ("15 s showreel, go all out") is not a brief — it
 yields a pretty, generic video. Ask once, in one compact message, for the missing real
 inputs (product, screenshots, numbers, brand); otherwise assume and state the assumption.
+Get **numbers, not adjectives**: duration, format, fps, the music mood and *where the main
+moment is* (e.g. "the title hits at 6.5 s"), and **named cuts with their times**
+("0:00–0:05 opening: …"). If the user did not give them, propose them in the brief.
+First piece for a new client or style: start with 15–30 s and stop at the storyboard
+(keyframes) for approval — long films burn time and plan usage before anyone saw a frame.
 
 **B — Time it.** If an audio file exists, measure its real duration and derive cue points
 from it (captions/transcript timestamps) — never guess by eye. Without audio, estimate
@@ -56,6 +64,8 @@ phrase cues, never a beat grid.
 palette, type, grid, shape vocabulary, materials/light, camera grammar, transition grammar,
 intensity curve, effect budget. Read `references/art-direction.md`. Create a direction for
 THIS project; the kit's default (`signalNoir`) is a starting point, never the answer.
+Start from a named style in `references/style-library.md` (or save a new one there): keep its
+Signature features fixed and write only the Creative seed for this video.
 Pick 1–2 skeletons from `references/scene-recipes.md` (one-shape morph loop, continuous
 take, accent thread, cursor-driven UI, beat-cut promo, scale journey, mechanism-as-proof…)
 and start the prohibition list from its "default prohibition list". Specify with numbers,
@@ -95,12 +105,24 @@ build them in parallel (one scene each, same direction file, same cue map), then
    "no flags" and still scored 4/10 with a fresh critic — run both, every time.
 4. *Spacing pass* — 3 frames per shot (start + 0.3 s, middle, end, and the peak of any grow),
    tiled and inspected one by one for overlaps; repeat after every layout/timing change.
+   `scripts/shot-pass.py out/video.mp4 shots.json` does the extraction and tiling.
    See `references/spacing-and-layout.md`.
+5. *One-fix loop* — for each further round: contact sheet at 1 frame / 2 s
+   (`shot-pass.py --every 2`), score 1–10 the hook in the first 0.5 s, phone legibility,
+   music ↔ cuts, and "does any frame look like an AI template"; name the **worst stretch with
+   its exact time, fix only that, re-render, stop**. Re-doing everything throws away what
+   already worked and returns another generic version.
 Use `templates/quality-checklist.md`.
 
 **G — Deliver.** Final render + source + how to edit (where the direction lives, how to
 change text/timing, the render command). State plainly what was rendered and checked, and
 what was not. Never claim a render or a check that did not happen.
+Six checks before any delivery (especially client work): the hook is on screen in the first
+0.5 s with no black frame · duration, format and fps match the brief · every on-screen text is
+legible on a phone and correctly spelled in the target language · the music is the user's, the
+client's or generated in code · no third-party character or brand used as decoration in paid
+work · the contact sheet was reviewed and approved cut by cut. Deliver every requested format
+(e.g. 1920x1080 and 1080x1920) as separate layouts, each with its own spacing pass.
 
 ## Non-negotiables
 
@@ -136,7 +158,13 @@ what was not. Never claim a render or a check that did not happen.
 11. **Always remove breaths and dead air from real footage**, before speeding up and before
    timing anything: `scripts/cut-breaths.py --verify` (energy-based, never Whisper word gaps),
    then re-time every cue through the time map it writes.
-12. **Verify versions before version-gated APIs.** Run `npx remotion versions`. Shader
+12. **Licenses for code and assets, not only footage.** Before reusing code, prompts, styles,
+   characters or samples from another repository, read its LICENSE: no license = study only,
+   never reuse in paid work; MIT covers the code, not the music, lyrics or characters shipped
+   with it. Mascots (e.g. Clawd) and brands stay out of client films unless the client owns them.
+13. **Never crop illustrated characters or logos.** `objectFit: "contain"` on a matching
+   background for characters, logos and brand cards; check them at their largest frame.
+14. **Verify versions before version-gated APIs.** Run `npx remotion versions`. Shader
    transitions, `@remotion/effects`, `HtmlInCanvasMotionBlur`, `TransitionSeries.Overlay`
    and light leaks need recent 4.0.x releases (see `references/effects-catalog.md`).
 
@@ -173,6 +201,10 @@ components when the concept needs something the kit does not have.
 | Talking-head edits, captions (Whisper), cutting pauses, overlays | `references/talking-head-captions.md` |
 | Building on a finished voiceover; YouTube/own footage, sound bites, rights, EDIT PLAN | `references/voiceover-and-footage.md` |
 | Zones, spacing, zero-overlap rule, the per-shot check | `references/spacing-and-layout.md` |
+| Named styles (signature features + creative seed), saving a client style, format variants | `references/style-library.md` |
+| Lyric videos and word-level sync | `references/lyric-and-word-sync.md` |
+| Character rigs, emotion sheets, acting beats, painterly textures | `references/character-animation.md` |
+| Ready-to-paste prompts in Portuguese (10 kinds of video) | `templates/prompts-pt.md` |
 | Turning a vague request into a director brief | `templates/director-brief.md` |
 | Proven scene skeletons with numbers, default prohibitions, technical gotchas | `references/scene-recipes.md` |
 | Studios and sources behind these rules | `references/reference-library.md` |
@@ -186,6 +218,29 @@ components when the concept needs something the kit does not have.
 - `scripts/voice-map.mjs` — voiceover → words/phrases/pauses (ElevenLabs alignment or STT, script+pauses, or Whisper)
 - `scripts/footage.mjs` — search / fetch (CC-first) / import / moments / clip (loudness-matched) / credits
 - `scripts/cut-breaths.py` — removes breaths/pauses from talking-head footage (video+audio), optional speed-up, writes a time map, `--verify` re-transcribes and fails on missing words (Python: numpy; faster-whisper for `--verify`)
+- `scripts/synth-score.py` — original music bed from a JSON section spec (pad, pluck, bass, drums, risers, booms, tension ticks), auto-ducked under the voice; no samples, no rights issues
+- `scripts/sfx.py` — synthesized SFX track: soft mouse clicks on cuts (3 variants), ticks on checkmarks, sub booms
+- `scripts/shot-pass.py` — per-shot spacing pass (3 frames per shot, labeled, tiled) or a contact sheet every N s
+- `scripts/avatar-sync.py` — re-times an AI-avatar clip's frames to the real narration (MFCC + DTW, or word anchors); drops the clip's own audio
+
+## Production lessons (from shipped reels)
+
+- **Real images whenever a company or person is named** — founders, CEOs, logos, places;
+  press "divulgação" photos and Wikimedia/CC0, credit in one fixed spot. Pure motion graphics
+  for a news story read as boring.
+- **News reels open on the real headline** (clipping with outlet + date), then the question
+  in huge type. Sample brand colors from official images; never guess hex values.
+- **Pace for social:** a new shot every 1.5–3 s (photo whips 0.18 s, punch-ins). Cap stacked
+  punch-ins (≤ 3.5 % total) — they push edge content past the side margins.
+- **AI avatar intros:** cut away early (on the first brand name), remove the avatar's audio
+  and re-time its frames to the narration (`avatar-sync.py`).
+- **Absolute vs local time:** inside a shot, convert voice cues with one helper
+  (`useAt(shotStart)(absCue)`); never mix the two units.
+- **SFX taste:** many creators find whooshes loud and generic — default to soft mouse clicks
+  on cuts, ~20 dB under the voice; offer no-music versions when they add music in-app.
+- **Renders on small disks:** render one client with `--public-dir` holding only its assets
+  (each bundle copies the whole `public/`) and delete `remotion-webpack-bundle-*` /
+  `remotion-*-assets*` from the temp folder after renders.
 
 ## Output format
 
