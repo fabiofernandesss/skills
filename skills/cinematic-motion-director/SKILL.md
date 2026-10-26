@@ -1,6 +1,6 @@
 ---
 name: cinematic-motion-director
-description: Art-directs and builds premium motion-design videos in code (Remotion + React + TypeScript) — kinetic typography, 2.5D/3D camera, parallax, refined easing, cinematic transitions, beat-synced music, UI/product demos with cursor and shape morphs, and real renders. Use when the user wants a motion graphics video, Reel/TikTok/Shorts, explainer, product or SaaS promo, animated title, kinetic-type piece, video ad creative or ad variations, "After Effects-style" animation, or asks to animate a script, voiceover or briefing; also for talking-head edits with captions, for building a full video on top of a finished voiceover (ElevenLabs or any narration) with B-roll and sound bites from YouTube or the user's footage, brand vignettes in a reusable named style (style library: signature features + creative seed), lyric videos synced word by word, short character-acting scenes, news-reaction reels that open on a real headline clipping, and when improving an existing Remotion video ("make this transition smoother", "this looks like a slideshow"). Works inside existing Remotion projects and AI pipelines that generate ad creatives from data.
+description: Art-directs and builds premium motion-design videos in code (Remotion + React + TypeScript) — kinetic typography, 2.5D/3D camera, parallax, refined easing, cinematic transitions, beat-synced music, UI/product demos with cursor and shape morphs, and real renders. Use when the user wants a motion graphics video, Reel/TikTok/Shorts, explainer, product or SaaS promo, animated title, kinetic-type piece, video ad creative or ad variations, "After Effects-style" animation, or asks to animate a script, voiceover or briefing; also for talking-head edits with captions and "behind the head" effects (person cutout + face tracking: giant word behind the speaker, orbiting cards, checklists under the chin, spotlight, lock-on brackets, effect-showcase reels), for building a full video on top of a finished voiceover (ElevenLabs or any narration) with B-roll and sound bites from YouTube or the user's footage, brand vignettes in a reusable named style (style library: signature features + creative seed), lyric videos synced word by word, short character-acting scenes, news-reaction reels that open on a real headline clipping, and when improving an existing Remotion video ("make this transition smoother", "this looks like a slideshow"). Works inside existing Remotion projects and AI pipelines that generate ad creatives from data.
 ---
 
 # Cinematic Motion Director
@@ -24,7 +24,7 @@ Identify the mode first; it changes how much you ask and what you deliver.
 | **A. New video** | script, idea, voiceover or briefing | direction + storyboard → project → reviewed render |
 | **B. Ad / template system** | ad creatives, variations, "our app generates videos", existing Remotion project | data-driven composition (zod schema) + variants + batch render path. Read `references/ad-creatives.md` |
 | **C. Revision** | "smoother", "more premium", "too fast", a frame looks wrong | diagnose with frames + `rhythm-audit` → targeted fix → before/after frames |
-| **D. Talking head** | face-to-camera footage, captions/legendas, cut pauses, overlays on a creator video | transcript → caption style options → cuts, punch-ins, overlays. Read `references/talking-head-captions.md` |
+| **D. Talking head** | face-to-camera footage, captions/legendas, cut pauses, overlays on a creator video, effects behind the head | transcript → caption style options → cuts, punch-ins, overlays; depth effects via `person-matte.py` + `depth.tsx`. Read `references/talking-head-captions.md` and `references/talking-head-effects.md` |
 | **E. Voiceover edit** | "here's my ElevenLabs voice, build the video", B-roll/cortes from YouTube or own files, sound bites | voice map → footage (rights-checked) → EDIT PLAN → `EditTimeline` render. Read `references/voiceover-and-footage.md` |
 | **F. Style / vignette** | "same look for another client", channel/podcast opener, "use style X" | pick or save a style from `references/style-library.md`; edit only the Creative seed; deliver every requested format |
 | **G. Lyric video** | music + lyrics, "every word on the beat" | rights check → word timings verified on 10 lines → scene plan approved → 60 fps render. Read `references/lyric-and-word-sync.md` |
@@ -184,6 +184,7 @@ Read `motion-kit/README.md` for the full API.
 - `formats.tsx` — `FORMATS`, `SAFE_ZONES`, `useSafeArea`, `SafeZoneGuide`
 - `sync.ts` — `cues()`, `estimateSpeechSeconds`, and music sync: `beatPulse`, `beatIndex`, `snapToBeat`
 - `ui.tsx` — `Cursor` (arc travel, press + ripple), `MorphBox` ("one shape, never cut"), `Handoff` (accent carried through every morph)
+- `depth.tsx` (import directly) — `DepthStack` (base → behind → person cutout → anchored → front), `useFace`, `faceZoom` (≤ 2×), `faceOnScreen`, `placeBeside` (beside the face, inside the frame), `coversFace`, `fxWindow`
 - `edit.tsx` (import directly; needs `@remotion/media`) — `EditTimeline` renders an EDIT PLAN: narration slices, B-roll, sound bites, type scenes, captions, credits; `planTimeline`, `resolveEditAssets`
 - `easing.ts` also: `springSteps` (one value, many targets, pure function of frame), `SHAPE_SPRING`, `CAMERA_SPRING`
 - `text.tsx` also: `Typewriter` (human keystroke rhythm, caret blinks only when idle)
@@ -201,6 +202,7 @@ components when the concept needs something the kit does not have.
 | Project setup, fonts, audio, compositions, 3D, rendering, pitfalls | `references/remotion-implementation.md` |
 | Ads, variants, safe zones, AI pipelines, batch rendering | `references/ad-creatives.md` |
 | Talking-head edits, captions (Whisper), cutting pauses, overlays | `references/talking-head-captions.md` |
+| Depth effects on a talking head (behind the head, face-anchored, 20 effect recipes), effect-showcase reel formats | `references/talking-head-effects.md` |
 | Building on a finished voiceover; YouTube/own footage, sound bites, rights, EDIT PLAN | `references/voiceover-and-footage.md` |
 | Zones, spacing, zero-overlap rule, the per-shot check | `references/spacing-and-layout.md` |
 | Sound effects: roles, sync offsets, run gaps, levels vs voice/music, stop-downs, cheap-SFX checklist, earshot | `references/sound-design.md` |
@@ -220,6 +222,7 @@ components when the concept needs something the kit does not have.
 - `scripts/beat-map.mjs` — BPM, beats, downbeats, drop and sections of a music track → JSON
 - `scripts/voice-map.mjs` — voiceover → words/phrases/pauses (ElevenLabs alignment or STT, script+pauses, or Whisper)
 - `scripts/footage.mjs` — search / fetch (CC-first) / import / moments / clip (loudness-matched) / credits
+- `scripts/person-matte.py` — person cutout (VP9-alpha `person.webm`) + smoothed face track (`face.json`) from a talking-head clip, for `depth.tsx` (MediaPipe Selfie Segmenter + OpenCV YuNet, CPU; pip install mediapipe opencv-python)
 - `scripts/cut-breaths.py` — removes breaths/pauses from talking-head footage (video+audio), optional speed-up, writes a time map, `--verify` re-transcribes and fails on missing words (Python: numpy; faster-whisper for `--verify`)
 - `scripts/synth-score.py` — original music bed from a JSON section spec (pad, pluck, bass, drums, risers, booms, tension ticks), auto-ducked under the voice; no samples, no rights issues
 - `scripts/sfx-earshot.py` — SFX track from the earshot bank (252 designed effects as code: clicks, laptop keys, pops, knocks, shutters, dings, whooshes, hits, risers); cues.json of {t, role} → fx.wav aligned on each take's measured onset/peak with pro offsets and run gaps, level set against the voice, audited takes re-rolled (needs an earshot clone + numpy scipy soundfile soxr; no torch)

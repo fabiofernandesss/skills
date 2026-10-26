@@ -79,3 +79,11 @@ Antes de eu aprovar: monte uma folha de contato com 1 quadro a cada 2 s (shot-pa
 Dê nota de 1 a 10 para: gancho nos primeiros 0,5 s, legibilidade no celular, música x cortes, e se algum quadro parece template de IA.
 Aponte o PIOR trecho com o tempo exato, corrija só ele, renderize de novo e pare. Eu reviso e peço o próximo.
 ```
+
+## 11. Efeitos atrás da cabeça (vídeo falando pra câmera)
+```text
+Use a skill cinematic-motion-director (references/talking-head-effects.md). Vídeo: [MP4 meu falando].
+Rode person-matte.py e me proponha 1 efeito a cada frase de impacto, cada um de 1,5 a 4 s, começando na palavra que dá nome a ele:
+palavra gigante atrás da cabeça em "[PALAVRA]", checklist embaixo do queixo nos itens "[A | B | C]", cards orbitando quando eu falar "[...]".
+Nada cobre o rosto; zoom no máximo 2x; me mostre um quadro do meio de cada efeito antes do render. Minha identidade: Switzer, laranja #D97757.
+```

@@ -39,6 +39,7 @@ Esta skill faz o agente trabalhar como um **diretor de arte + motion designer s�
 - 🎤 **Clipe com letra** — cada palavra no quadro em que é cantada (60 fps), com checagem de direitos da música.
 - 🧸 **Personagem atuando** — rig como dados, folha de emoções aprovada antes, cenas com antecipação e reação; nunca corta mãos ou pés.
 - 📰 **Notícia com recorte real** — abre na manchete verdadeira (veículo + data) e usa fotos reais de quem é citado.
+- 🧍 **Efeitos atrás da cabeça** — recorta você do vídeo e rastreia o rosto (`person-matte.py`), aí o Remotion põe a palavra gigante atrás de você, cartões orbitando a cabeça, checklist embaixo do queixo, holofote, colchetes travando no rosto… sempre sem cobrir o rosto (`depth.tsx`, 20 receitas em `references/talking-head-effects.md`).
 - 🔊 **Efeitos sonoros de estúdio (earshot)** — 252 efeitos desenhados em código (cliques, teclado de notebook, pops, batidas de madeira, obturador, dings, whooshes, impactos, risers), alinhados no ponto exato medido em filmes profissionais (o toque vem 11 ms antes do corte, o pico do whoosh 37 ms depois), volume calculado contra a sua voz, e cada efeito passa por uma checagem de qualidade. `scripts/sfx-earshot.py`.
 - 🎼 **Trilha e efeitos gerados no código** — `synth-score.py` (trilha original que abaixa sob a voz) e `sfx.py` (cliques de mouse suaves nas transições), sem risco de direitos.
 - 🧑‍💻 **Avatar sincronizado** — `avatar-sync.py` reencaixa os quadros do avatar de IA na sua narração real.

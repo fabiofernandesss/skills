@@ -71,6 +71,23 @@ Music (feed `beats.json` from `scripts/beat-map.mjs`): `beatPulse(frame, fps, be
 
 Working example: `showcase/cinematic-motion-director/src/UiMorph.tsx` in the skills repo.
 
+## depth.tsx — behind-the-head depth (import directly)
+
+Feed it `person.webm` + `face.json` from `scripts/person-matte.py`.
+
+```tsx
+const f = useFace(face as FaceTrack);                    // {cx, cy, w} px at this frame
+const z = interpolate(frame, [0, 90], [1, 1.12]);
+const chip = placeBeside(faceOnScreen(f, z, W, H), 260, 80, W, H); // right/left/above/below, off the face
+<DepthStack base={staticFile("me/base.mp4")} person={staticFile("me/person.webm")}
+  camera={faceZoom(f, z, W, H)}
+  behind={<GiantWord />}          // under the person, moves with the camera
+  anchored={<Brackets face={f} />} // over the person, moves with the camera
+  front={<Chip {...chip} />} />    // screen space: captions, counters, cards placed with faceOnScreen
+```
+`coversFace(face, box)` for the spacing pass; `fxWindow(frame, from, to)` for in/out envelopes.
+Tested with Remotion 4.0.536 (OffthreadVideo `transparent`).
+
 ## edit.tsx — voiceover-driven edits
 Not exported from `index.ts` (needs `@remotion/media`); import `./motion/edit`.
 `EditTimeline({ plan, voice, scenes })` renders an EDIT PLAN (see `references/voiceover-and-footage.md`):
