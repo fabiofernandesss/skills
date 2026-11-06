@@ -79,6 +79,16 @@ the affected frames, repeat. Report honestly which items were checked.
 - [ ] Contact sheet reviewed and approved cut by cut (one-fix loop: worst stretch named, fixed, re-rendered)
 - [ ] Illustrated characters, logos and brand cards never cropped (hands, feet, edges visible)
 
+## Before posting (from the field)
+- [ ] The final MP4 opens and plays on a phone (not only the preview or the contact sheet)
+- [ ] 9:16 at 1080 × 1920, text away from the top ~220 px and bottom ~320 px
+- [ ] Every number and fact on screen was checked before the render (two sources for explainers)
+- [ ] No AI-generated face of a real person, no brand logo used as decoration
+- [ ] Ads use the client's own character, never a third-party mascot (e.g. Clawd)
+- [ ] Logos checked on their final background (white header logos vanish on light paper)
+- [ ] Paid generation (AI clips, keyframes) logged with its credit cost
+- [ ] `references/never-do.md` read against this video
+
 ## Delivery
 - [ ] Final render path, source path, and how to edit text/timing/colors
 - [ ] What was rendered and checked is stated; what was not is stated too

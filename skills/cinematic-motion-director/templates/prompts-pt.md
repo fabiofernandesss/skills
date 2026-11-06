@@ -87,3 +87,10 @@ Rode person-matte.py e me proponha 1 efeito a cada frase de impacto, cada um de 
 palavra gigante atrás da cabeça em "[PALAVRA]", checklist embaixo do queixo nos itens "[A | B | C]", cards orbitando quando eu falar "[...]".
 Nada cobre o rosto; zoom no máximo 2x; me mostre um quadro do meio de cada efeito antes do render. Minha identidade: Switzer, laranja #D97757.
 ```
+
+## 12. Uma cena feita por outra skill dentro do meu Reels
+```text
+Use a skill cinematic-motion-director como diretora e editora. A cena de [0:12 a 0:20] é [uma prova de matemática / um quadro branco narrado / uma pintura sendo feita]:
+faça só essa cena com a skill [manim / whiteboard-video / claude-drawing] (references/animation-skills-ecosystem.md), em 1080x1920 ou normalizada com fundo [#FAF9F5],
+e traga o MP4 de volta pra linha do tempo do Remotion com minhas legendas, cliques e espaçamento. Antes de entregar, confira references/never-do.md.
+```

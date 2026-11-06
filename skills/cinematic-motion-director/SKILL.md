@@ -126,6 +126,14 @@ work · the contact sheet was reviewed and approved cut by cut. Deliver every re
 
 ## Non-negotiables
 
+Before the storyboard and again before the final render, read `references/never-do.md`: the
+negative rules from shipped edits (overlaps, white logos on light paper, second accent colors,
+cropped heads, text over the face, Whisper-gap cuts eating words, loud whooshes, music nobody
+asked for, end cards on client videos, renders that fill the disk). The top five:
+never let two elements overlap · never cover or crop the face · never add a color or font the
+identity does not have · never cut speech without re-transcribing it · never deliver an MP4 you
+did not open.
+
 1. **Deterministic frames.** Everything derives from `useCurrentFrame()`. No CSS
    transitions/animations, no `setTimeout`, no `Math.random()` (use `random(seed)`), no
    R3F `useFrame()`. The same frame must render identically twice.
@@ -205,6 +213,8 @@ components when the concept needs something the kit does not have.
 | Depth effects on a talking head (behind the head, face-anchored, 20 effect recipes), effect-showcase reel formats | `references/talking-head-effects.md` |
 | Building on a finished voiceover; YouTube/own footage, sound bites, rights, EDIT PLAN | `references/voiceover-and-footage.md` |
 | Zones, spacing, zero-overlap rule, the per-shot check | `references/spacing-and-layout.md` |
+| What never to do (negative rules from shipped edits) | `references/never-do.md` |
+| Other animation skills (whiteboard, Manim, painted characters, code drawing, collage…): when to hand them a scene, what to borrow, cost | `references/animation-skills-ecosystem.md` |
 | Sound effects: roles, sync offsets, run gaps, levels vs voice/music, stop-downs, cheap-SFX checklist, earshot | `references/sound-design.md` |
 | Named styles (signature features + creative seed), saving a client style, format variants | `references/style-library.md` |
 | Lyric videos and word-level sync | `references/lyric-and-word-sync.md` |
@@ -266,6 +276,10 @@ specifics — `remotion-best-practices`, `remotion-render`, `remotion-captions`.
 the direction, the storyboard and the quality bar; they own the API surface. If they are not
 installed, fetch the current docs at https://www.remotion.dev/docs before using an API you
 are not certain about.
+
+For a scene in another medium — narrated whiteboard, a math proof, a painting in progress, a
+hand-painted character, AI collage — hand that one scene to a sibling skill and bring its MP4
+back as footage: `references/animation-skills-ecosystem.md`.
 
 ## Commercial use
 
