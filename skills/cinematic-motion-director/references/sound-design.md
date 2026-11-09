@@ -103,3 +103,63 @@ The full earshot (CLAP + AudioSet models, ~1.1 GB, torch CPU) gives an agent "ea
 `realness` (does it read code-synthesized). Install only when the user wants it and the disk
 has room; never claim how something sounds without such a reading or a human listen.
 It cannot judge taste, emotion or licences.
+
+## 7. Real sounds: Openverse → earshot → Real SFX (checked 2026-11-07)
+
+The edit is built in code and you cannot hear it, so a guessed or synthesized sound is what
+gives the AI away. Three free tools close that gap, in this order:
+
+**Openverse — where the sound comes from.** api.openverse.org/v1/audio/, no key, no account
+(20 requests/min, 200/day, 20 per page, 240 per search; headers `x-ratelimit-available-anon_*`;
+429 when over). Needs a `User-Agent` header (Python's default gets 403).
+- Search in **English** ("door slam" 240 hits vs "porta batendo" 2).
+- `license=cc0,pdm,by` — list licenses one by one. Not `license_type=commercial,modification`
+  (lets CC BY-SA and Sampling+ through). Not `category=sound_effect` for effects (Freesound
+  items have no category → 0 results); `category=music` does work for Jamendo tracks.
+- `length=shortest` (< 30 s) for effects; `medium,long` for music beds.
+- Licences: CC0/PDM free for ads; CC BY allowed **with credit** (the `attribution` field is the
+  ready text; keep it in a credits file); avoid BY-SA (whole video inherits it); never BY-NC /
+  BY-ND in a business video. Check `foreign_landing_url` — the user is responsible.
+- `url` = 128 kbps MP3 preview (fine for short effects); `-hq.ogg` (~192 kbps) is public too; the
+  original WAV (`alt_files`) needs a Freesound login.
+
+**earshot — the ear.** `uv tool install "earshot[mcp] @ git+https://github.com/Leonxlnx/earshot"`,
+`earshot doctor --fetch` (~1.1 GB, CPU only), `claude mcp add earshot --scope user -e
+EARSHOT_THREADS=3 -- earshot mcp` (models stay loaded; CLI reloads 20–40 s per call).
+- `rank "<sound description>" *.mp3 --top 5`, `match file "<claim>" --alts …`, `describe`,
+  `realness`. **Describe the sound, never its function**, in English, 2–3 ways and keep the best
+  reading (176/195 vs 152/195 with one description). strong/plausible = use; weak/no match =
+  change the sound or the words.
+- No match → the bank (252 code effects, no model): `earshot sfx render whoosh_fast/crisp
+  --dur 0.8 --apex 0.32`, then `earshot sfx check`. Or `earshot forge … --refs <downloads>
+  --mode real`. Judge forged sounds by measurements + spectrogram + a human ear.
+
+**Real SFX (Clipwing, MIT) — puts each sound on the frame.** `git clone --depth 1
+https://github.com/Clipwing/skills.git`, copy `skills/real-sfx` to `~/.claude/skills/`,
+`python3 scripts/setup.py init --library main="$HOME/Sons" --uisfx --index`. Needs full FFmpeg
+(Homebrew `ffmpeg-full`: drawtext + rubberband).
+- Event list is the precise path (`[{"t": 1.2, "type": "pop"}, …]` written by looking at the
+  frames; `find_moments.py --fine` + `look.py` only to find candidates — auto drafts miss soft
+  motion). `from_cues.py` → `mix.py --plan` (show the user) → `mix.py --voice-safe`.
+- It removes an old synthesized layer instead of stacking on it (axis "doubling").
+- `critique.py … --listen-out` until every axis ≥ 8 (≥ 3 rounds on a new film); then
+  `earshot critique` + `earshot sheet` and read the sheet.
+
+**Launch kit levels** (`earshot kit init --preset launch`, dB over the music in the second
+before; offset vs the event): pop +8.5 dB, +4 ms, ≥ 114 ms apart · short whoosh +9 dB, peak
++37 ms after the cut · long whoosh +8.5 dB, +3 ms · hit +7.5 dB on the cut · land +8 dB, +30 ms,
+≥ 159 ms · tock +8 dB, −40 ms, ≥ 100 ms · click +6.5 dB, −11 ms, ≥ 85 ms · key +6.5 dB, +8 ms,
+≥ 87 ms · tick +3 dB, 0, ≥ 66 ms · riser +8 dB, −23 ms · swell +9.5 dB, peak +42 ms.
+Save the chosen sound per role as the brand kit and reuse it in every video.
+
+**Music bed from a real track** (what replaced the synthesized bed): cut to the voice length,
+`loudnorm I=-23`, fade in 0.4 s / out 1.2 s, `sidechaincompress` keyed by the voice
+(threshold 0.02, ratio 3, attack 30, release 500) → bed ≈ −32 LUFS against a −16 LUFS voice
+(~16 dB under); play it at volume 1 in Remotion (no second gain stage).
+
+**Before posting:** every sound CC0/PDM/CC BY checked on its page, none NC · CC BY credits ready
+for the description · each chosen effect has an earshot strong/plausible reading · each effect
+sits on a screen event · Real SFX axes ≥ 8 or a known reason · voice stays in front, no old
+synthesized beep doubled · the user listened to the flagged moments on headphones and on a
+phone speaker.
+

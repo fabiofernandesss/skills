@@ -147,3 +147,30 @@ calculateMetadata: async ({ props }) => {
 - [ ] `rhythm-audit` on the RENDER (its own audio): no dead stretch except reading holds
       (`--audio` only when the external audio is aligned with the video — not with inserted bites)
 - [ ] Storyboard sheet reviewed; captions never cover faces or the source's own text
+
+## 7. Narration from a local TTS voice clone (VoiceStudio / OmniVoice)
+
+Shipped on the Jéssica Tavares ads (Nov 2026). The generator is fast to iterate but has three
+defects that a transcript check does not catch, because Whisper fills the missing sound in:
+
+1. **One line per request.** Long text times out (~300 s); generate paragraph by paragraph and
+   keep `partes.txt` with one spoken line per row.
+2. **Final syllable dropped.** Send `"<line> Pronto."`; Whisper gives the sentinel's start late,
+   so walk back from it: out of the sentinel's sound, across the silence, to the last loud 20 ms
+   window = real end of speech. Keep 120 ms after it with a fade that starts *after* the speech.
+   Refuse the take if the silence before the sentinel is < 40 ms.
+3. **Leading hiss** (~0.3 s "tsiii" in every file): start at max(0.34 s, energy onset − 80 ms).
+4. **Verify each line** with Whisper medium against the text (+ sentinel), regenerate up to 3×;
+   tolerate split words ("pre analise" = "preanalise") and loose "a/e/o".
+5. **Generate at the final speed**, never `atempo` afterwards. Rewrite words the voice gets
+   wrong instead of fighting them: "Terceira" came out with an open "é" → "Por fim"; "Primeira:"
+   was skipped → "A primeira coisa:".
+6. Join with 0.3 s gaps, clean (highpass 85, afftdn −45, −2 dB at 250 Hz, +3.5 dB shelf at
+   3.8 kHz, light compression, loudnorm −16 LUFS), then re-transcribe the *joined* file: the
+   sentinel must not appear anywhere.
+7. Timings for captions: align the script words to Whisper's word times with difflib (script
+   text on screen, Whisper only for time) — Whisper misspells names and technical words.
+
+Report honestly: transcripts prove words, not pronunciation. Ask the user to listen before
+building the video on a new voice.
+

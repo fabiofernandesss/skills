@@ -215,7 +215,7 @@ components when the concept needs something the kit does not have.
 | Zones, spacing, zero-overlap rule, the per-shot check | `references/spacing-and-layout.md` |
 | What never to do (negative rules from shipped edits) | `references/never-do.md` |
 | Other animation skills (whiteboard, Manim, painted characters, code drawing, collage…): when to hand them a scene, what to borrow, cost | `references/animation-skills-ecosystem.md` |
-| Sound effects: roles, sync offsets, run gaps, levels vs voice/music, stop-downs, cheap-SFX checklist, earshot | `references/sound-design.md` |
+| Sound effects: roles, sync offsets, run gaps, levels vs voice/music, stop-downs, cheap-SFX checklist, earshot; real sounds and music from Openverse, earshot, Real SFX | `references/sound-design.md` |
 | Named styles (signature features + creative seed), saving a client style, format variants | `references/style-library.md` |
 | Lyric videos and word-level sync | `references/lyric-and-word-sync.md` |
 | Character rigs, emotion sheets, acting beats, painterly textures | `references/character-animation.md` |
@@ -234,7 +234,7 @@ components when the concept needs something the kit does not have.
 - `scripts/footage.mjs` — search / fetch (CC-first) / import / moments / clip (loudness-matched) / credits
 - `scripts/person-matte.py` — person cutout (VP9-alpha `person.webm`) + smoothed face track (`face.json`) from a talking-head clip, for `depth.tsx` (MediaPipe Selfie Segmenter + OpenCV YuNet, CPU; pip install mediapipe opencv-python)
 - `scripts/cut-breaths.py` — removes breaths/pauses from talking-head footage (video+audio), optional speed-up, writes a time map, `--verify` re-transcribes and fails on missing words (Python: numpy; faster-whisper for `--verify`)
-- `scripts/synth-score.py` — original music bed from a JSON section spec (pad, pluck, bass, drums, risers, booms, tension ticks), auto-ducked under the voice; no samples, no rights issues
+- `scripts/synth-score.py` — synthesized music bed from a JSON section spec; sketch/placeholder only — clients rejected it as final music, use a real Openverse track (`references/sound-design.md` §7)
 - `scripts/sfx-earshot.py` — SFX track from the earshot bank (252 designed effects as code: clicks, laptop keys, pops, knocks, shutters, dings, whooshes, hits, risers); cues.json of {t, role} → fx.wav aligned on each take's measured onset/peak with pro offsets and run gaps, level set against the voice, audited takes re-rolled (needs an earshot clone + numpy scipy soundfile soxr; no torch)
 - `scripts/sfx.py` — fallback synthesized SFX track: soft mouse clicks on cuts (3 variants), ticks on checkmarks, sub booms
 - `scripts/shot-pass.py` — per-shot spacing pass (3 frames per shot, labeled, tiled) or a contact sheet every N s

@@ -55,6 +55,20 @@ storyboard and again before the final render. Each rule says what went wrong and
   given, mix it ~17 dB under speech (~13 dB in gaps) with ducking.
 - **Never keep an AI avatar's own audio**: drop it and re-time its frames to the real voice.
 - **Never place an SFX by its file start**: align on its measured onset / peak.
+- **Never ship the synthesized music bed (`synth-score.py`) as final music** in a paid ad: a client
+  rejected it as "a música está ruim". Use a real track (Openverse: CC0/PDM, or CC BY with the
+  credit), ~16–18 dB under the voice with ducking (`references/sound-design.md` §7). Send the user
+  2–4 short previews of voice + track to choose — you cannot hear taste.
+- **Never trust a local TTS clone's last syllable** (VoiceStudio/OmniVoice): it drops the end of
+  the final word ("importan-" without "te", "lin-" without "k"), and Whisper still "hears" the
+  whole word from context. Generate each line with a sentinel word after it ("… importante.
+  Pronto."), then cut in the silence before the sentinel and re-transcribe the joined file to
+  prove the sentinel did not leak (`references/voiceover-and-footage.md` §7).
+- **Never cut a TTS line from Whisper's first-word time**: each generated file opens with
+  ~0.3 s of hiss ("tsiii") that Whisper glues to the first word. Skip the first ~0.34 s and start
+  at the energy onset.
+- **Never speed up TTS with `atempo`** after generating: it smeared "Faça" into "Passa". Ask the
+  generator for the final speed (e.g. 1.145) instead.
 
 ## Story, images and endings
 
