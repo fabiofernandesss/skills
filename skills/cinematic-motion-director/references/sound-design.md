@@ -153,9 +153,9 @@ before; offset vs the event): pop +8.5 dB, +4 ms, ≥ 114 ms apart · short whoo
 Save the chosen sound per role as the brand kit and reuse it in every video.
 
 **Music bed from a real track** (what replaced the synthesized bed): cut to the voice length,
-`loudnorm I=-23`, fade in 0.4 s / out 1.2 s, `sidechaincompress` keyed by the voice
-(threshold 0.02, ratio 3, attack 30, release 500) → bed ≈ −32 LUFS against a −16 LUFS voice
-(~16 dB under); play it at volume 1 in Remotion (no second gain stage).
+`loudnorm I=-19`, fade in 0.4 s / out 1.2 s, `sidechaincompress` keyed by the voice
+(threshold 0.02, ratio 3, attack 30, release 500) → bed ≈ −29 LUFS against a −16 LUFS voice
+(~13 dB under; −32 was judged too low by the client); play it at volume 1 in Remotion (no second gain stage).
 
 **Before posting:** every sound CC0/PDM/CC BY checked on its page, none NC · CC BY credits ready
 for the description · each chosen effect has an earshot strong/plausible reading · each effect
